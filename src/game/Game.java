@@ -46,7 +46,7 @@ public class Game implements GameInterface {
     //game components
     private MenuScreen menu                 = null;
     // private OptionsScreen options           = null;
-    private Score score                     = null;
+    // private Score score                     = null;
     private ScreenTransition screenT        = null;
     private GameLevel gameLevel			    = null;
     private ExitScreen exitScreen           = null;
@@ -72,7 +72,7 @@ public class Game implements GameInterface {
         this.currentMusicTheme  = 0;
         this.menu               = new MenuScreen(this);
         // this.options            = new OptionsScreen(this);
-        this.score              = new Score(this, new Point(9, 45), new Point(1173, 45), new Point(75, 412), new Point(58, 618));
+        // this.score              = new Score(this, new Point(9, 45), new Point(1173, 45), new Point(75, 412), new Point(58, 618));
         this.screenT            = new ScreenTransition(this);
         this.exitScreen         = new ExitScreen(this, this.wwm, this.whm);
         this.gameOver           = new GameOver(this, this.wwm, this.whm);
@@ -95,6 +95,8 @@ public class Game implements GameInterface {
 
                 //sum framecounter
                 this.framecounter += frametime;
+
+                this.menu.update(frametime);
                 
                 /*
                 //update just one time
@@ -182,6 +184,8 @@ public class Game implements GameInterface {
                 
                 //sum framecounter
                 this.framecounter += frametime;
+                
+                this.screenT.update(frametime);
 
                 /*
                 //update just once
@@ -198,7 +202,7 @@ public class Game implements GameInterface {
                 }
 
                 this.score.update(frametime);
-                this.screenT.update(frametime);
+                
                 */
                
             } else if (this.gameState.getCurrentState() == StateMachine.EXITING) {
@@ -258,7 +262,7 @@ public class Game implements GameInterface {
                            this.gameState.getCurrentState() == StateMachine.EXITING ||
                            this.gameState.getCurrentState() == StateMachine.GAME_OVER) {
                     // this.board.draw(frametime);
-                    this.score.draw(frametime);
+                    // this.score.draw(frametime);
                     this.screenT.draw(frametime);
                             
                     if (this.gameState.getCurrentState() == StateMachine.EXITING) {
@@ -300,7 +304,7 @@ public class Game implements GameInterface {
         this.resetTheme();
         // this.board.resetGame();
         this.screenT.reset();
-        this.score.reset();
+        // this.score.reset();
         this.gameOver.reset();
     }
 
@@ -627,7 +631,7 @@ public class Game implements GameInterface {
 
     @Override
     public synchronized void gameTerminate() {
-        this.score.reset();
+        // this.score.reset();
         this.theme.stop();
         this.framecounter   = 0;
         this.skipDraw       = true;
@@ -663,7 +667,7 @@ public class Game implements GameInterface {
     public int getInternalResolutionHeight()        {   return (this.whm);          }
     public VolatileImage getBufferedImage()         {   return (this.bufferImage);  }
     public Graphics2D getG2D()                      {   return (this.g2d);          }
-    public Score getScore()                         {   return (this.score);        }
+    // public Score getScore()                         {   return (this.score);        }
     // public Board getBoard()                         {   return (this.board);        }
     public void updateGraphics2D(Graphics2D g2d)    {   this.g2dFS = g2d;           }
 }
