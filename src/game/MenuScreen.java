@@ -55,6 +55,7 @@ public class MenuScreen {
      * @param frametime
      */
     public synchronized void update(long frametime) {
+        this.gameRef.changeGameState(StateMachine.IN_GAME);
     }
 
     /**
