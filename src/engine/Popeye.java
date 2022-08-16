@@ -62,7 +62,7 @@ public class Popeye implements Runnable {
         private boolean showFPS                     = true;
 
         //control and fullscreen controller
-        private boolean fullscreen                  = false;
+        private boolean fullscreen                  = true;
         private boolean isFullScreenAvailable       = false;
 
         /**
@@ -311,7 +311,7 @@ public class Popeye implements Runnable {
         private void renderFPSLayer(long frametime) {
             //verify if the user want to show the FPS
             if (this.showFPS) {
-                this.g2d.setColor(Color.BLACK);
+                this.g2d.setColor(Color.YELLOW);
                 this.g2d.drawString("fps: " + (int)(1_000_000_000D / frametime), this.windowWidth - 50, this.windowHeight - 10);
             }
         }
