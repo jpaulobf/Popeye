@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Class responsable for the game
+ * Class responsable for put the game elements together
  */
 public class Game implements GameInterface {
 
@@ -48,7 +48,6 @@ public class Game implements GameInterface {
     // private OptionsScreen options           = null;
     // private Score score                     = null;
     private ScreenTransition screenT        = null;
-    private GameLevel gameLevel			    = null;
     private ExitScreen exitScreen           = null;
     private GameOver gameOver               = null;
 
@@ -542,70 +541,6 @@ public class Game implements GameInterface {
         this.screenT.reset();
     }
     
-	/**
-	 * Bridge to the gameLevel getCurrentGameLevel
-	 */
-	public byte getCurrentLevel() {
-        return (this.gameLevel.getCurrentGameLevel());
-    }
-
-    /**
-	 * Bridge to the gameLevel resetGameLevel
-	 */
-    public void resetGameLevel() {
-        this.gameLevel.resetGameLevel();
-    }
-
-	/**
-	 * Private Game Level Class
-	 */
-	private class GameLevel {
-		
-		private byte firstLevelDefinition		= 1;
-		private final double defaultGameSpeed 	= 1D;
-		private byte level 						= this.firstLevelDefinition;
-		private double gameSpeed 				= this.defaultGameSpeed;
-		private double speedFactor 				= 1.35D;
-		private final static byte MIN 			= 1;
-		private final static byte MAX 			= 8;
-
-		public GameLevel(byte level) {
-			if (level >= MIN && level <= MAX) {
-				this.firstLevelDefinition = level;
-				this.level = this.firstLevelDefinition;
-				this.defGameSpeed();
-			}
-		}
-
-		public byte getCurrentGameLevel() {
-			return (this.level);
-		}
-
-		public void nextGameLevel() {
-			if (this.level < MAX) {
-				this.level++;
-				this.defGameSpeed();
-			}
-		}
-
-		public double getGameSpeed() {
-			return (this.gameSpeed);
-		}
-
-		public void resetGameLevel() {
-			this.level = this.firstLevelDefinition;
-			this.gameSpeed = this.defaultGameSpeed;
-			this.defGameSpeed();
-		}
-
-		private void defGameSpeed() {
-            this.gameSpeed = this.defaultGameSpeed;
-			for (int i = MIN; i < this.level; i++) {
-				this.gameSpeed *= speedFactor;
-			}
-		}
-	}
-
     @Override
     public synchronized void gameTerminate() {
         // this.score.reset();
