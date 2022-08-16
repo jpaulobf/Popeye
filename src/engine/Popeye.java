@@ -36,8 +36,8 @@ public class Popeye implements Runnable {
         private int positionY                       = 0;
 
         //width and height of the window
-        private int windowWidth                     = 1366;
-        private int windowHeight                    = 768;
+        private int windowWidth                     = 1920;
+        private int windowHeight                    = 1080;
         private int fullScreenWidth                 = 0;
         private int fullScreenHeight                = 0;
         private int fullScreenXPos                  = 0;
@@ -77,7 +77,7 @@ public class Popeye implements Runnable {
             this.size = Toolkit.getDefaultToolkit(). getScreenSize();
 
             //Verify if Windows width/height fits the current resolution, otherwise, resize it.
-            double heightMinus50 = this.size.getHeight() - 50;
+            double heightMinus50 = this.size.getHeight() - 0;
             if (this.windowHeight > heightMinus50) {
                 this.windowWidth = (int)((double)this.windowWidth / (double)this.windowHeight * heightMinus50);
                 this.windowHeight = (int)heightMinus50;
