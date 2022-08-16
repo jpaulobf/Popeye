@@ -9,7 +9,6 @@ import java.awt.image.VolatileImage;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
-import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -45,6 +44,7 @@ public class Game implements GameInterface {
 
     //game components
     private MenuScreen menu                 = null;
+    private GameStage gameStage             = null;
     // private OptionsScreen options           = null;
     // private Score score                     = null;
     private ScreenTransition screenT        = null;
@@ -71,12 +71,14 @@ public class Game implements GameInterface {
 
         this.currentMusicTheme  = 0;
         this.menu               = new MenuScreen(this);
+        this.gameStage          = new GameStage(this);
         // this.options            = new OptionsScreen(this);
         // this.score              = new Score(this, new Point(9, 45), new Point(1173, 45), new Point(75, 412), new Point(58, 618));
         this.screenT            = new ScreenTransition(this);
         this.exitScreen         = new ExitScreen(this, this.wwm, this.whm);
         this.gameOver           = new GameOver(this, this.wwm, this.whm);
 
+        //get the audio list
         this.audioList          = LoadingStuffs.getInstance().getAudioList();
     }
     
@@ -187,23 +189,13 @@ public class Game implements GameInterface {
                 
                 this.screenT.update(frametime);
 
-                /*
                 //update just once
                 if (this.framecounter == frametime) {
-                    this.theme.playContinuously();
+                    // this.theme.playContinuously();
                     this.skipDraw = true;
                 } else {
-                    if (this.sortPiece) {
-                        this.board.sortPiecesList();
-                        this.sortPiece = false;
-                    }
-                    
-                    this.board.update(frametime);
+                    this.gameStage.update(frametime);
                 }
-
-                this.score.update(frametime);
-                
-                */
                
             } else if (this.gameState.getCurrentState() == StateMachine.EXITING) {
                 
@@ -246,7 +238,7 @@ public class Game implements GameInterface {
         if (!this.skipDraw) {
             //this graphical device (g2d) points to backbuffer, so, we are making things behide the scenes
             //clear the stage
-            this.g2d.setBackground(Color.WHITE);
+            this.g2d.setBackground(Color.BLACK);
             this.g2d.clearRect(0, 0, this.wwm, this.whm);
 
             if (!this.changingStage) {
@@ -263,6 +255,7 @@ public class Game implements GameInterface {
                            this.gameState.getCurrentState() == StateMachine.GAME_OVER) {
                     // this.board.draw(frametime);
                     // this.score.draw(frametime);
+                    this.gameStage.draw(frametime);
                     this.screenT.draw(frametime);
                             
                     if (this.gameState.getCurrentState() == StateMachine.EXITING) {
@@ -293,7 +286,7 @@ public class Game implements GameInterface {
     @Override
     public synchronized void tooglePause() {
         this.toogleMuteTheme();
-        // this.board.tooglePause();
+        this.gameStage.tooglePause();
     }
 
     /**
@@ -302,7 +295,7 @@ public class Game implements GameInterface {
     @Override
     public void softReset() {
         this.resetTheme();
-        // this.board.resetGame();
+        this.gameStage.resetGame();
         this.screenT.reset();
         // this.score.reset();
         this.gameOver.reset();
@@ -326,7 +319,7 @@ public class Game implements GameInterface {
         if (this.gameState.getCurrentState() == StateMachine.MENU) {
             this.menu.keyMovement(keyDirection);
         } else if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-            // this.board.move(keyDirection);
+            this.gameStage.move(keyDirection);
         } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
             // this.options.keyMovement(keyDirection);
         }
@@ -338,7 +331,7 @@ public class Game implements GameInterface {
      */
     private synchronized void movement(int keyDirection, boolean releaseAfter) {
         if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-            // this.board.move(keyDirection, releaseAfter);
+            this.gameStage.move(keyDirection, releaseAfter);
         }
     }
 
@@ -388,7 +381,6 @@ public class Game implements GameInterface {
     public void keyReleased(int keyCode) {
         if (!this.changingStage && !this.stopped) {
             if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-                // this.board.canRotate = true;
                 if (keyCode == N1)  {this.toogleSoundTheme();   }
                 if (keyCode == M)   {this.toogleMuteTheme();    }
                 if (keyCode == P)   {this.tooglePause();        }
@@ -548,7 +540,6 @@ public class Game implements GameInterface {
      */
     public void nextLevel() {
         this.screenT.reset();
-        this.nextGameSpeed();
     }
     
 	/**
@@ -558,25 +549,11 @@ public class Game implements GameInterface {
         return (this.gameLevel.getCurrentGameLevel());
     }
 
-	/**
-	 * Bridge to the gameLevel nextGameLevel
-	 */
-	public void nextGameSpeed() {
-		this.gameLevel.nextGameLevel();
-	}
-
     /**
 	 * Bridge to the gameLevel resetGameLevel
 	 */
     public void resetGameLevel() {
         this.gameLevel.resetGameLevel();
-    }
-
-    /**
-	 * Bridge to the gameLevel getGameSpeed
-	 */
-    public double getGameSpeed() {
-        return (this.gameLevel.getGameSpeed());
     }
 
 	/**
