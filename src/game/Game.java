@@ -44,6 +44,7 @@ public class Game implements GameInterface {
 
     //game components
     private MenuScreen menu                 = null;
+    private GameLevel gameLevel             = null;
     private GameStage gameStage             = null;
     // private OptionsScreen options           = null;
     // private Score score                     = null;
@@ -70,6 +71,7 @@ public class Game implements GameInterface {
 
         this.currentMusicTheme  = 0;
         this.menu               = new MenuScreen(this);
+        this.gameLevel          = new GameLevel(this);
         this.gameStage          = new GameStage(this);
         // this.options            = new OptionsScreen(this);
         // this.score              = new Score(this, new Point(9, 45), new Point(1173, 45), new Point(75, 412), new Point(58, 618));
@@ -538,6 +540,7 @@ public class Game implements GameInterface {
      * Advance to the next game level.
      */
     public void nextLevel() {
+        this.gameLevel.nextLevel();
         this.screenT.reset();
     }
     
@@ -582,4 +585,33 @@ public class Game implements GameInterface {
     // public Score getScore()                         {   return (this.score);        }
     // public Board getBoard()                         {   return (this.board);        }
     public void updateGraphics2D(Graphics2D g2d)    {   this.g2dFS = g2d;           }
+
+
+    /**
+     * Control the Game-Level
+     */
+    private class GameLevel {
+
+        private GameInterface gameRef       = null;
+        private static byte FIRST_LEVEL     = 0;
+        private static byte SECOND_LEVEL    = 1;
+        private static byte THIRD_LEVEL     = 2;
+        private volatile byte currentLevel  = FIRST_LEVEL;
+
+        /**
+         * Constructor
+         * @param game
+         */
+        public GameLevel(GameInterface game) {
+            this.gameRef = game;
+        }
+
+        public void nextLevel() {
+            this.currentLevel = (byte)(++this.currentLevel%3);
+        }
+
+        public byte getCurrentLevel() {
+            return (this.currentLevel);
+        }
+    }
 }
