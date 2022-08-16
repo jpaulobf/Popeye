@@ -11,7 +11,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
-import interfaces.CanvasEngine;
 import interfaces.ControllerListener;
 import interfaces.GameInterface;
 import util.JoystickController;
@@ -157,7 +156,7 @@ public class Popeye implements Runnable {
                 public synchronized void keyReleased(KeyEvent e) {
                     if (e.getKeyCode() == 113) {
                         if (fullscreen) {
-                            toogleFullscreenResolution();
+                            toogleFullScreenProportion();
                         }
                     }
                     if (e.getKeyCode() == 114) {toogleFullscreen();}
@@ -223,7 +222,7 @@ public class Popeye implements Runnable {
                     //At least, copy the backbuffer to the canvas screen
                     this.canvas.getGraphics().drawImage(this.game.getBufferedImage(), 0, 0, this.windowWidth, this.windowHeight, //destine
                                                                                       0, 0, game.getInternalResolutionWidth(), 
-                                                                                            game.getInternalResolutionHeight(), //source
+                                                                                                     game.getInternalResolutionHeight(), //source
                                                                                       this);
                 }
             }
@@ -270,7 +269,7 @@ public class Popeye implements Runnable {
         /**
          * Change screen stretch on the fly (F2)
          */
-        public synchronized void toogleFullscreenResolution() {
+        public synchronized void toogleFullScreenProportion() {
             this.fullscreenState = (this.fullscreenState + 1)%3;
 
             switch (this.fullscreenState) {
@@ -439,9 +438,7 @@ public class Popeye implements Runnable {
                     timeReference = timeStamp;
                 }
             } else {
-                
                 while (isEngineRunning) {
-    
                     accumulator = 0;
     
                     //calc the update time
