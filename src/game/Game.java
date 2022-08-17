@@ -24,7 +24,6 @@ public class Game implements GameInterface {
     private Graphics2D g2d                  = null;
     private List<Audio> audioList           = new ArrayList<Audio>();
 
-    private volatile byte currentMusicTheme = 0;
     private volatile Audio theme            = null;
     private volatile long framecounter      = 0;
     private volatile boolean mute           = false;
@@ -33,8 +32,8 @@ public class Game implements GameInterface {
     private volatile boolean skipDraw       = false;
 
     //width and height of window for base metrics of the game
-    private final int wwm                   = 1366;
-    private final int whm                   = 768;
+    private final int wwm                   = 1920;
+    private final int whm                   = 1080;
 
     //graphic device elements
     private VolatileImage bufferImage       = null;
@@ -43,11 +42,11 @@ public class Game implements GameInterface {
     private Graphics2D g2dFS                = null;
 
     //game components
-    private MenuScreen menu                 = null;
+    private MenuScreen menuScreen           = null;
+    // private OptionsScreen options        = null;
     private GameLevel gameLevel             = null;
     private GameStage gameStage             = null;
-    // private OptionsScreen options           = null;
-    // private Score score                     = null;
+    // private Score score                  = null;
     private ScreenTransition screenT        = null;
     private ExitScreen exitScreen           = null;
     private GameOver gameOver               = null;
@@ -67,14 +66,11 @@ public class Game implements GameInterface {
         // ->>>  create the game elements objects
         //////////////////////////////////////////////////////////////////////
         this.gameState          = new StateMachine(this);
-        //this.theme              = this.music1;
-
-        this.currentMusicTheme  = 0;
-        this.menu               = new MenuScreen(this);
+        this.menuScreen         = new MenuScreen(this);
         this.gameLevel          = new GameLevel(this);
         this.gameStage          = new GameStage(this);
-        // this.options            = new OptionsScreen(this);
-        // this.score              = new Score(this, new Point(9, 45), new Point(1173, 45), new Point(75, 412), new Point(58, 618));
+        // this.options         = new OptionsScreen(this);
+        // this.score           = new Score(this, new Point(9, 45), new Point(1173, 45), new Point(75, 412), new Point(58, 618));
         this.screenT            = new ScreenTransition(this);
         this.exitScreen         = new ExitScreen(this, this.wwm, this.whm);
         this.gameOver           = new GameOver(this, this.wwm, this.whm);
@@ -99,7 +95,7 @@ public class Game implements GameInterface {
                 //sum framecounter
                 this.framecounter += frametime;
 
-                this.menu.update(frametime);
+                this.menuScreen.update(frametime);
                 
                 /*
                 //update just one time
@@ -243,12 +239,11 @@ public class Game implements GameInterface {
             this.g2d.clearRect(0, 0, this.wwm, this.whm);
 
             if (!this.changingStage) {
-                
                 //////////////////////////////////////////////////////////////////////
                 // ->>>  draw the game elements
                 //////////////////////////////////////////////////////////////////////
                 if (this.gameState.getCurrentState() == StateMachine.MENU) { 
-                    this.menu.draw(frametime);
+                    this.menuScreen.draw(frametime);
                 } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
                     // this.options.draw(frametime);
                 } else if (this.gameState.getCurrentState() == StateMachine.IN_GAME ||
@@ -318,21 +313,11 @@ public class Game implements GameInterface {
      */
     private synchronized void movement(int keyDirection) {
         if (this.gameState.getCurrentState() == StateMachine.MENU) {
-            this.menu.keyMovement(keyDirection);
+            this.menuScreen.keyMovement(keyDirection);
         } else if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
             this.gameStage.move(keyDirection);
         } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
             // this.options.keyMovement(keyDirection);
-        }
-    }
-
-    /**
-     * Control the game main character movement
-     * @param keyDirection
-     */
-    private synchronized void movement(int keyDirection, boolean releaseAfter) {
-        if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-            this.gameStage.move(keyDirection, releaseAfter);
         }
     }
 
@@ -342,19 +327,19 @@ public class Game implements GameInterface {
     @Override
     public void keyPressed(int keyCode) {
         if (!this.changingStage && !this.stopped) {
-            this.movement(keyCode);
-            if (keyCode == 45) {this.decMasterVolume();}
-            if (keyCode == 61) {this.incMasterVolume();}
-        }
 
-        if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-            //when ESC is pressed
-            if (keyCode == 27) {
-                this.gameState.setCurrentState(StateMachine.EXITING);
-                this.framecounter = 0;
+            if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
+                
+                if (keyCode == 27) { //esc
+                    this.gameState.setCurrentState(StateMachine.EXITING);
+                    this.framecounter = 0;
+                } else {
+                    this.movement(keyCode);
+                }
+
+            } else if (this.gameState.getCurrentState() == StateMachine.EXITING) {
+                this.exitScreen.move(keyCode);
             }
-        } else if (this.gameState.getCurrentState() == StateMachine.EXITING) {
-            this.exitScreen.move(keyCode);
         }
     }
 
@@ -366,23 +351,11 @@ public class Game implements GameInterface {
     }
 
     /**
-     * Key pressed
-     * @param keyCode
-     */
-    @Override
-    public void keyPressed(int keyCode, boolean releaseAfter) {
-        if (!this.changingStage && !this.stopped) {
-            this.movement(keyCode, releaseAfter);
-        }
-    }
-
-    /**
      * Game keyRelease
      */
     public void keyReleased(int keyCode) {
         if (!this.changingStage && !this.stopped) {
             if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-                if (keyCode == N1)  {this.toogleSoundTheme();   }
                 if (keyCode == M)   {this.toogleMuteTheme();    }
                 if (keyCode == P)   {this.tooglePause();        }
                 if (keyCode == R)   {this.softReset();          }
@@ -407,34 +380,6 @@ public class Game implements GameInterface {
     }
 
     /**
-     * Switch the game theme
-     * @param theme
-     */
-    private void toogleSoundTheme() {
-        this.theme.stop();
-        this.currentMusicTheme = (byte)(++this.currentMusicTheme%3);
-
-        /*
-        switch (this.currentMusicTheme) {
-            case 0:
-                this.music1.stop();
-                this.theme = this.music1;
-                break;
-            case 1:
-                this.music2.stop();
-                this.theme = this.music2;
-                break;
-            case 2:
-                this.music3.stop();
-                this.theme = this.music3;
-                break;
-        } 
-        */
-
-        this.theme.playContinuously();
-    }
-
-    /**
      * Stop the theme position
      */
     @Override
@@ -449,18 +394,6 @@ public class Game implements GameInterface {
         this.stopTheme();
         this.theme.playContinuously();
     }
-
-    /**
-     * Increase/Decrease the Master Volume
-     */
-    public void decMasterVolume() {this.decVolumeSFX(); this.decVolumeTheme();}
-    public void incMasterVolume() {this.incVolumeSFX(); this.incVolumeTheme();}
-
-    /**
-     * Increase/Decrease only the theme
-     */
-    public void decVolumeTheme() {this.theme.decVolume(1);}
-    public void incVolumeTheme() {this.theme.addVolume(1);}
     
     /**
      * Decrease the volume of the music
@@ -511,12 +444,6 @@ public class Game implements GameInterface {
             }
         }
     }
-
-    /**
-     * Increase/Decrease the SFX Volume
-     */
-    public void decVolumeSFX() {/*this.board.decVolumeSFX();*/}
-    public void incVolumeSFX() {/*this.board.incVolumeSFX();*/}
 
     /**
      * Generic audio control
