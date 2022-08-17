@@ -11,9 +11,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
-import interfaces.ControllerListener;
 import interfaces.GameInterface;
-import util.JoystickController;
 
 /**
     Project:    Popeye Game
@@ -26,7 +24,7 @@ public class Popeye implements Runnable {
     /**
      * Game Canvas
      */
-    private class Canvas extends JFrame implements CanvasEngine, ControllerListener {
+    private class Canvas extends JFrame implements CanvasEngine {
 
         private static final long serialVersionUID  = 1L;
 
@@ -55,7 +53,7 @@ public class Popeye implements Runnable {
         private Dimension size                      = null;
 
         //add support to joystick
-        private JoystickController controller       = null;
+        //private JoystickController controller       = null;
 
         //show or hide the game FPS
         private boolean showFPS                     = true;
@@ -144,7 +142,7 @@ public class Popeye implements Runnable {
             this.g2d  = this.game.getG2D();
 
             //thread para o controle (quando presente)
-            this.controller = new JoystickController(this);
+            //this.controller = new JoystickController(this);
 
             //KeyListener
             this.addKeyListener(new KeyAdapter() {
@@ -175,7 +173,7 @@ public class Popeye implements Runnable {
          */
         public synchronized void update(long frametime) {
             this.game.update(frametime);
-            this.controller.update(frametime);
+            // this.controller.update(frametime);
         }
         
         /**
@@ -331,10 +329,10 @@ public class Popeye implements Runnable {
             this.bufferStrategy = super.getBufferStrategy();
         }
 
-        @Override
+        /*
         public void notify(boolean U, boolean D, boolean L, boolean R, boolean HOLD, boolean DROP, boolean ROTATE) {
             if (U) {
-                this.game.keyPressed(38, true);
+                this.game.keyPressed(38);
             } else if (D) {
                 this.game.keyPressed(40);
             } else if (L) {
@@ -346,13 +344,13 @@ public class Popeye implements Runnable {
             } else if (DROP) {
                 this.game.keyPressed(32);
             } else if (ROTATE) {
-                this.game.keyPressed(38, true);
+                this.game.keyPressed(38);
             }
 
             if (!U && !D && !L && !R) {
                 //this.game.keyReleased(0);
             }
-        }
+        }*/
     }
 
     /**
