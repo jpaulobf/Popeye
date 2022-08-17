@@ -90,7 +90,7 @@ public class GameStage {
 	 * Move the game
 	 * @param keyCode
 	 */
-	public synchronized void move(int keyCode, boolean releaseAfter) {
+	public synchronized void move(int keyCode) {
 		if (!this.stopped) {
 			if (keyCode == 39) { //right
 			
@@ -105,15 +105,6 @@ public class GameStage {
 			}
 		}
 	}
-
-	/**
-	 * Move the game
-	 * @param keyCode
-	 */
-	public synchronized void move(int keyCode) {
-		this.move(keyCode, false);
-	}
-
 
 	//----------------------------------------------------//
     //--------------- Pause & Reset ----------------------//
