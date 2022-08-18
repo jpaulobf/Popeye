@@ -1,7 +1,5 @@
 package game;
 
-import util.Audio;
-import util.LoadingStuffs;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import interfaces.GameInterface;
@@ -9,8 +7,6 @@ import java.awt.image.VolatileImage;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Class responsable for put the game elements together
@@ -22,11 +18,9 @@ public class Game implements GameInterface {
 
     //some support and the graphical device itself
     private Graphics2D g2d                  = null;
-    private List<Audio> audioList           = new ArrayList<Audio>();
-
-    private volatile Audio theme            = null;
+    
+    //game logic
     private volatile long framecounter      = 0;
-    private volatile boolean mute           = false;
     private volatile boolean stopped        = false;
     private volatile boolean changingStage  = false;
     private volatile boolean skipDraw       = false;
@@ -42,8 +36,9 @@ public class Game implements GameInterface {
     private Graphics2D g2dFS                = null;
 
     //game components
+    private GameMusicSFX gameMusicSFX       = null;
     private MenuScreen menuScreen           = null;
-    // private OptionsScreen options        = null;
+    private OptionsScreen options           = null;
     private GameLevel gameLevel             = null;
     private GameStage gameStage             = null;
     // private Score score                  = null;
@@ -68,15 +63,15 @@ public class Game implements GameInterface {
         this.gameState          = new StateMachine(this);
         this.menuScreen         = new MenuScreen(this);
         this.gameLevel          = new GameLevel(this);
-        this.gameStage          = new GameStage(this);
-        // this.options         = new OptionsScreen(this);
+        this.gameStage          = new GameStage(this, this.wwm, this.whm);
+        this.options            = new OptionsScreen(this);
+        this.gameMusicSFX       = new GameMusicSFX(this);
         // this.score           = new Score(this, new Point(9, 45), new Point(1173, 45), new Point(75, 412), new Point(58, 618));
         this.screenT            = new ScreenTransition(this);
         this.exitScreen         = new ExitScreen(this, this.wwm, this.whm);
         this.gameOver           = new GameOver(this, this.wwm, this.whm);
 
-        //get the audio list
-        this.audioList          = LoadingStuffs.getInstance().getAudioList();
+        
     }
     
     /**
@@ -188,7 +183,7 @@ public class Game implements GameInterface {
 
                 //update just once
                 if (this.framecounter == frametime) {
-                    // this.theme.playContinuously();
+                    this.gameMusicSFX.playTheme();
                     this.skipDraw = true;
                 } else {
                     this.gameStage.update(frametime);
@@ -245,15 +240,16 @@ public class Game implements GameInterface {
                 if (this.gameState.getCurrentState() == StateMachine.MENU) { 
                     this.menuScreen.draw(frametime);
                 } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
-                    // this.options.draw(frametime);
+                    this.options.draw(frametime);
                 } else if (this.gameState.getCurrentState() == StateMachine.IN_GAME ||
                            this.gameState.getCurrentState() == StateMachine.EXITING ||
                            this.gameState.getCurrentState() == StateMachine.GAME_OVER) {
-                    // this.board.draw(frametime);
-                    // this.score.draw(frametime);
+                    
+                    //render game elements
                     this.gameStage.draw(frametime);
+                    // this.score.draw(frametime);
                     this.screenT.draw(frametime);
-                            
+
                     if (this.gameState.getCurrentState() == StateMachine.EXITING) {
                         this.exitScreen.draw(frametime);
                     }
@@ -276,12 +272,16 @@ public class Game implements GameInterface {
                                                0, 0, this.wwm, this.whm, null);
     }
 
+    //----------------------------------------------------//
+    //--------------- Game Control        ----------------//
+    //----------------------------------------------------//
+
     /**
      * Toogle the pause button
      */
     @Override
     public synchronized void tooglePause() {
-        this.toogleMuteTheme();
+        this.gameMusicSFX.toogleMuteTheme();
         this.gameStage.tooglePause();
     }
 
@@ -290,7 +290,7 @@ public class Game implements GameInterface {
      */
     @Override
     public void softReset() {
-        this.resetTheme();
+        this.gameMusicSFX.resetTheme();
         this.gameStage.resetGame();
         this.screenT.reset();
         // this.score.reset();
@@ -302,6 +302,49 @@ public class Game implements GameInterface {
      */
     public synchronized void toogleChangingStage() {
         this.changingStage = !this.changingStage;
+    }
+
+    /**
+     * Exit the game (after confirmation)
+     */
+    public void exitGame() {
+        System.exit(0);
+    }
+
+    /**
+     * Advance to the next game level.
+     */
+    public void nextLevel() {
+        this.gameLevel.nextLevel();
+        this.screenT.reset();
+    }
+    
+    @Override
+    public synchronized void gameTerminate() {
+        // this.score.reset();
+        this.gameMusicSFX.stopTheme();
+        this.framecounter   = 0;
+        this.skipDraw       = true;
+    }
+
+    @Override
+    public synchronized void gameOver() {
+        this.framecounter = 0;
+        this.changeGameState(StateMachine.GAME_OVER);
+        this.skipDraw = true;
+    }
+
+    @Override
+    public synchronized void toMainMenu() {
+        this.changeGameState(StateMachine.MENU);
+    }
+
+    /**
+     * Change the game state
+     */
+    @Override
+    public synchronized void changeGameState(int state) {
+        this.gameState.currentState = state;
     }
 
     //----------------------------------------------------//
@@ -317,7 +360,7 @@ public class Game implements GameInterface {
         } else if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
             this.gameStage.move(keyDirection);
         } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
-            // this.options.keyMovement(keyDirection);
+            this.options.keyMovement(keyDirection);
         }
     }
 
@@ -344,201 +387,29 @@ public class Game implements GameInterface {
     }
 
     /**
-     * Exit the game (after confirmation)
-     */
-    public void exitGame() {
-        System.exit(0);
-    }
-
-    /**
      * Game keyRelease
      */
     public void keyReleased(int keyCode) {
         if (!this.changingStage && !this.stopped) {
             if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-                if (keyCode == M)   {this.toogleMuteTheme();    }
-                if (keyCode == P)   {this.tooglePause();        }
-                if (keyCode == R)   {this.softReset();          }
+                if (keyCode == M)   {this.gameMusicSFX.toogleMuteTheme();   }
+                if (keyCode == P)   {this.tooglePause();                    }
+                if (keyCode == R)   {this.softReset();                      }
             }
         }
-    }
-
-    //----------------------------------------------------//
-    //--------------- Music & SFX  -----------------------//
-    //----------------------------------------------------//
-    /**
-     * Mute / unmute the game theme
-     */
-    @Override
-    public void toogleMuteTheme() {
-        if (!this.mute) {
-            this.theme.pause();
-        } else {
-            this.theme.playContinuously();
-        }
-        this.mute = !this.mute;
-    }
-
-    /**
-     * Stop the theme position
-     */
-    @Override
-    public void stopTheme() {
-        this.theme.stop();
-    }
-
-    /**
-     * Aux reset method
-     */
-    private void resetTheme() {
-        this.stopTheme();
-        this.theme.playContinuously();
-    }
-    
-    /**
-     * Decrease the volume of the music
-     * @param volume
-     */
-    public void decVolumeMusic(float volume) {
-        this.controlVolume(volume, Audio.MUSIC, Audio.DECREASE);
-    }
-
-    /**
-     * Increase the volume of the music
-     * @param volume
-     */
-    public void incVolumeMusic(float volume) {
-        this.controlVolume(volume, Audio.MUSIC, Audio.INCREASE);
-    }
-
-    /**
-     * Decrease the volume of the SFX
-     * @param volume
-     */
-    public void decVolumeSFX(float volume) {
-        this.controlVolume(volume, Audio.SFX, Audio.DECREASE);
-    }
-
-    /**
-     * Increase the volume of the SFX
-     * @param volume
-     */
-    public void incVolumeSFX(float volume) {
-        this.controlVolume(volume, Audio.SFX, Audio.INCREASE);
-    }
-
-    /**
-     * Control the audio volume
-     * @param volume - float with the increment/decrement
-     * @param type - Music or SFX
-     * @param action - Increase or Decrease
-     */
-    private void controlVolume(float volume, byte type, byte action) {
-        for (Audio audio : audioList) {
-            if (audio.getType() == type) {
-                if (action == Audio.DECREASE) {
-                    audio.decVolume(volume);
-                } else {
-                    audio.addVolume(volume);
-                }
-            }
-        }
-    }
-
-    /**
-     * Generic audio control
-     */
-    public void audioMuteControl(byte type, boolean mute) {
-        for (Audio audio : audioList) {
-            if (audio.getType() == type) {
-                if (mute) {
-                    audio.mute();
-                } else {
-                    audio.unmute();
-                }
-            }
-        }
-    }
-
-    //----------------------------------------------------//
-    //--------------- 	Game Level  ----------------------//
-    //----------------------------------------------------//
-    /**
-     * Advance to the next game level.
-     */
-    public void nextLevel() {
-        this.gameLevel.nextLevel();
-        this.screenT.reset();
-    }
-    
-    @Override
-    public synchronized void gameTerminate() {
-        // this.score.reset();
-        this.theme.stop();
-        this.framecounter   = 0;
-        this.skipDraw       = true;
-    }
-
-    @Override
-    public synchronized void gameOver() {
-        this.framecounter = 0;
-        this.changeGameState(StateMachine.GAME_OVER);
-        this.skipDraw = true;
-    }
-
-    @Override
-    public synchronized void toMainMenu() {
-        this.changeGameState(StateMachine.MENU);
-    }
-
-    /**
-     * Change the game state
-     */
-    @Override
-    public synchronized void changeGameState(int state) {
-        this.gameState.currentState = state;
     }
 
     //----------------------------------------------------//
     //------------------- Accessors ----------------------//
     //----------------------------------------------------//
-    //public Score getScore()                     {   return (this.score);        }
-    //public GameOver getGameOver()               {   return this.gameOver;       }
+    public GameOver getGameOver()                   {   return this.gameOver;       }
     public StateMachine getGameState()              {   return this.gameState;      }
     public int getInternalResolutionWidth()         {   return (this.wwm);          }
     public int getInternalResolutionHeight()        {   return (this.whm);          }
     public VolatileImage getBufferedImage()         {   return (this.bufferImage);  }
     public Graphics2D getG2D()                      {   return (this.g2d);          }
     // public Score getScore()                         {   return (this.score);        }
-    // public Board getBoard()                         {   return (this.board);        }
     public void updateGraphics2D(Graphics2D g2d)    {   this.g2dFS = g2d;           }
-
-
-    /**
-     * Control the Game-Level
-     */
-    private class GameLevel {
-
-        private GameInterface gameRef       = null;
-        private static byte FIRST_LEVEL     = 0;
-        private static byte SECOND_LEVEL    = 1;
-        private static byte THIRD_LEVEL     = 2;
-        private volatile byte currentLevel  = FIRST_LEVEL;
-
-        /**
-         * Constructor
-         * @param game
-         */
-        public GameLevel(GameInterface game) {
-            this.gameRef = game;
-        }
-
-        public void nextLevel() {
-            this.currentLevel = (byte)(++this.currentLevel%3);
-        }
-
-        public byte getCurrentLevel() {
-            return (this.currentLevel);
-        }
-    }
+    public GameLevel getGameLevel()                 {   return this.gameLevel;      }
+    public GameMusicSFX getGameMusicSFX()           {   return (this.gameMusicSFX); }
 }
