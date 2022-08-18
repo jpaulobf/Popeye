@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.VolatileImage;
 
 /**
- * All games need to implement the IGame interface
+ * All games need to implement the GameInterface interface
  */
 public interface GameInterface {
 
@@ -65,47 +65,6 @@ public interface GameInterface {
      * @return internal height resolution
      */
     public int getInternalResolutionHeight();
-
-    /**
-     * Generic audio control
-     * @param type
-     * @param mute
-     */
-    public void audioMuteControl(byte type, boolean mute);
-
-    /**
-     * Mute the music
-     */
-    public void toogleMuteTheme();
-
-    /**
-     * Decrease the volume of the music
-     * @param volume
-     */
-    public void decVolumeMusic(float volume);
-
-    /**
-     * Increase the volume of the music
-     * @param volume
-     */
-    public void incVolumeMusic(float volume);
-
-    /**
-     * Decrease the volume of the SFX
-     * @param volume
-     */
-    public void decVolumeSFX(float volume);
-
-    /**
-     * Increase the volume of the SFX
-     * @param volume
-     */
-    public void incVolumeSFX(float volume);
-    
-    /**
-     * Stop the music
-     */
-    public void stopTheme();
 
     /**
      * Pause the game
