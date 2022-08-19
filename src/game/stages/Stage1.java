@@ -67,7 +67,41 @@ public class Stage1 {
             //todo....
             //...
 
+            this.drawCentralLadder(925, 564);
+
            
         }
+    }
+
+    private void drawCentralLadder(int startX, int startY) {
+
+        this.g2dBg.setColor(new Color(153,128,121));
+        this.g2dBg.fillRect(startX + 0, startY + 0, 18, 19);
+        this.g2dBg.fillRect(startX + 38, startY + 0, 18, 19);
+
+        this.g2dBg.fillRect(startX + 0, startY + 29, 18, 19);
+        this.g2dBg.fillRect(startX + 38, startY + 29, 18, 19);
+
+        this.g2dBg.fillRect(startX + 0, startY + 58, 18, 19);
+        this.g2dBg.fillRect(startX + 38, startY + 58, 18, 19);
+
+        this.g2dBg.fillRect(startX + 0, startY + 87, 18, 19);
+        this.g2dBg.fillRect(startX + 38, startY + 87, 18, 19);
+
+        this.g2dBg.fillRect(startX + 0, startY + 87, 18, 19);
+        this.g2dBg.fillRect(startX + 38, startY + 87, 18, 19);
+
+        this.g2dBg.fillRect(startX + 0, startY + 116, 18, 19);
+        this.g2dBg.fillRect(startX + 38, startY + 116, 18, 19);
+
+        this.g2dBg.setColor(new Color(65, 35, 0));
+
+        this.g2dBg.fillRect(startX + 0, startY + 19, 56, 10);
+        this.g2dBg.fillRect(startX + 0, startY + 48, 56, 10);
+        this.g2dBg.fillRect(startX + 0, startY + 77, 56, 10);
+        this.g2dBg.fillRect(startX + 0, startY + 106, 56, 10);
+
+        this.g2dBg.setColor(Color.BLACK);
+        this.g2dBg.fillRect(startX + 18, startY + 87, 20, 19);
     }
 }
