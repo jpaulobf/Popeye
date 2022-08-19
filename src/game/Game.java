@@ -90,45 +90,39 @@ public class Game implements GameInterface {
                 //sum framecounter
                 this.framecounter += frametime;
 
-                this.menuScreen.update(frametime);
-                
-                /*
                 //update just one time
                 if (this.framecounter == frametime) { 
                     //if necessary
-                    this.menu.firstUpdate(frametime);
+                    this.menuScreen.firstUpdate(frametime);
                 } else {
                     //update menu
-                    this.menu.update(frametime);
+                    this.menuScreen.update(frametime);
 
                     //then, check the selections
-                    if (this.menu.goOptions()) {
+                    if (this.menuScreen.goOptions()) {
                         
                         //reset the menu selection parameters
-                        this.menu.reset();
+                        this.menuScreen.reset();
 
                         //define the current state as option
                         this.gameState.setCurrentState(StateMachine.OPTIONS);
 
-                    } else if (this.menu.goGame()) {
+                    } else if (this.menuScreen.goGame()) {
 
                         //stop the game music
-                        this.menu.stopMusic();
+                        this.menuScreen.stopMusic();
                         
-                        //get the level defined in the menu
-                        this.gameLevel  = new GameLevel(this.menu.getLevel());
-                        //this.board      = new Board(this);
+                        this.gameStage = new GameStage(this, this.wwm, this.whm);
 
                         //reset the menu selection parameters
-                        this.menu.reset();
+                        this.menuScreen.reset();
 
                         //go to staging status
                         this.gameState.setCurrentState(StateMachine.STAGING);
-                    } else if (this.menu.goExit()) {
+                    } else if (this.menuScreen.goExit()) {
                         System.exit(0);
                     }
                 }
-                */
             } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
 
                 //sum framecounter
@@ -361,6 +355,8 @@ public class Game implements GameInterface {
             this.gameStage.move(keyDirection);
         } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
             this.options.keyMovement(keyDirection);
+        } else if (this.gameState.getCurrentState() == StateMachine.EXITING) {
+            this.exitScreen.move(keyDirection);
         }
     }
 
@@ -370,18 +366,14 @@ public class Game implements GameInterface {
     @Override
     public void keyPressed(int keyCode) {
         if (!this.changingStage && !this.stopped) {
+            this.movement(keyCode);
+        }
 
-            if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
-                
-                if (keyCode == 27) { //esc
-                    this.gameState.setCurrentState(StateMachine.EXITING);
-                    this.framecounter = 0;
-                } else {
-                    this.movement(keyCode);
-                }
-
-            } else if (this.gameState.getCurrentState() == StateMachine.EXITING) {
-                this.exitScreen.move(keyCode);
+        if (this.gameState.getCurrentState() == StateMachine.IN_GAME) {
+            //when ESC is pressed
+            if (keyCode == 27) {
+                this.gameState.setCurrentState(StateMachine.EXITING);
+                this.framecounter = 0;
             }
         }
     }
