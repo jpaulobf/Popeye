@@ -57,10 +57,38 @@ public class LoadingStuffs {
             image = ImageIO.read(new File("images\\bean.png"));
             images.put("bean", image);
 
+            //------------------------------------------//
+            //----------------- Menu -------------------//
+            //------------------------------------------//
+            image = ImageIO.read(new File("images\\popeyelogo2.png"));
+            images.put("popeyelogo", image);
+
+            image = ImageIO.read(new File("images\\selector.png"));
+            images.put("selector", image);
+
+            image = ImageIO.read(new File("images\\menu_frame.png"));
+            images.put("menu-frame", image);
+
+            image = ImageIO.read(new File("images\\lbPlayGame.png"));
+            images.put("lbPlayGame", image);
+
+            image = ImageIO.read(new File("images\\lbOptions.png"));
+            images.put("lbOptions", image);
+
+            image = ImageIO.read(new File("images\\lbExitGame.png"));
+            images.put("lbExitGame", image);
+
+            //------------------------------------------//
+            //-------------- GameOver ------------------//
+            //------------------------------------------//
+
             image = ImageIO.read(new File("images\\gameover.png"));
             images.put("gameover", image);
 
             Logger.INFO("read all images...", this);
+
+
+            //--------------------------------------------------------------------------------------------------//
 
             Audio audio = new Audio("audio\\opening.wav", 0, Audio.SFX);
             if (audio != null && audio.isReady()) {
@@ -70,6 +98,25 @@ public class LoadingStuffs {
             audio = new Audio("audio\\closing.wav", 0, Audio.SFX);
             if (audio != null && audio.isReady()) {
                 audios.put("closing", audio);
+            }
+
+            //------------------------------------------//
+            //----------------- Menu -------------------//
+            //------------------------------------------//
+
+            audio = new Audio("audio\\star.wav", 0, Audio.SFX);
+            if (audio != null && audio.isReady()) {
+                audios.put("star", audio);
+            }
+
+            audio = new Audio("audio\\start.wav", 0, Audio.SFX);
+            if (audio != null && audio.isReady()) {
+                audios.put("start", audio);
+            }
+
+            audio = new Audio("audio\\intro.wav", 0, Audio.MUSIC);
+            if (audio != null && audio.isReady()) {
+                audios.put("intro", audio);
             }
 
             Logger.INFO("read all audio...", this);
