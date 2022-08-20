@@ -64,12 +64,11 @@ public class Stage1 {
             this.g2dBg.setBackground(Color.BLACK);
             this.g2dBg.clearRect(0, 0, this.windowWidth, this.windowHeight);
             
-            //todo....
-            //...
-
+            //upper path of the level
             this.g2dBg.setColor(new Color(57, 112, 0));
             this.g2dBg.fillRect(386, 303, 1155, 11);
 
+            //central paths of the level
             this.g2dBg.setColor(new Color(99, 100, 122));
             this.g2dBg.fillRect(344, 448, 311, 20);
             this.g2dBg.fillRect(1271, 448, 306, 20);
@@ -77,7 +76,7 @@ public class Stage1 {
             this.g2dBg.fillRect(366, 833, 1195, 20);
             this.g2dBg.fillRect(366, 833, 1195, 20);
 
-            //caminho final
+            //bottom path
             this.g2dBg.fillRect(344, 1026, 1232, 55);
             this.g2dBg.setColor(new Color(39, 80, 0));
             this.g2dBg.fillRect(924, 1017, 58, 9);
@@ -114,15 +113,92 @@ public class Stage1 {
            this.drawBarrel(384, 582);
            this.drawBarrel(384, 774);
 
+           //draw left signal
+           this.drawLeftSignal(383, 366);
+
+           //draw left signal
+           this.drawRightSignal(1461, 366);
+
+            //thru
+            this.drawThru(384, 396);
+            this.drawThru(1463,396);
+
            //flower
-           drawFlower(684, 239);
+           this.drawFlower(684, 239);
         }
     }
 
+    /**
+     * Draw the left signal
+     * @param startX
+     * @param startY
+     */
+    private void drawLeftSignal(int startX, int startY) {
+        this.g2dBg.setColor(new Color(252, 20, 0));
+        this.g2dBg.fillRect(startX + 38, startY + 9, 10, 78);
+
+        this.g2dBg.setColor(new Color(233, 163, 0));
+        this.g2dBg.fillRect(startX + 0, startY + 24, 5, 30);
+        this.g2dBg.fillRect(startX + 5, startY + 20, 5, 39);
+        this.g2dBg.fillRect(startX + 10, startY + 16, 5, 47);
+        this.g2dBg.fillRect(startX + 15, startY + 11, 5, 56);
+        this.g2dBg.fillRect(startX + 20, startY + 6, 4, 66);
+        this.g2dBg.fillRect(startX + 24, startY + 0, 4, 78);
+        this.g2dBg.fillRect(startX + 28, startY + 20, 44, 38);
+        this.g2dBg.fillRect(startX + 72, startY + 25, 5, 28);
+    }
+
+    /**
+     * Draw the right signal
+     * @param startX
+     * @param startY
+     */
+    private void drawRightSignal(int startX, int startY) {
+        this.g2dBg.setColor(new Color(252, 20, 0));
+        this.g2dBg.fillRect(startX + 29, startY + 9, 10, 78);
+
+        this.g2dBg.setColor(new Color(233, 163, 0));
+        this.g2dBg.fillRect(startX + 72, startY + 24, 5, 30);
+        this.g2dBg.fillRect(startX + 67, startY + 20, 5, 39);
+        this.g2dBg.fillRect(startX + 62, startY + 16, 5, 47);
+        this.g2dBg.fillRect(startX + 57, startY + 11, 5, 56);
+        this.g2dBg.fillRect(startX + 53, startY + 6, 4, 66);
+        this.g2dBg.fillRect(startX + 49, startY + 0, 4, 78);
+        this.g2dBg.fillRect(startX + 5, startY + 20, 44, 38);
+        this.g2dBg.fillRect(startX + 0, startY + 25, 5, 28);
+    }
+
+    /**
+     * 
+     * @param startX
+     * @param startY
+     */
+    private void drawThru(int startX, int startY) {
+        this.g2dBg.setColor(new Color(0, 4, 87));
+
+        this.g2dBg.fillRect(startX + 0, startY + 0, 12, 4);
+        this.g2dBg.fillRect(startX + 4, startY + 4, 4, 14);
+        this.g2dBg.fillRect(startX + 18, startY + 0, 4, 18);
+        this.g2dBg.fillRect(startX + 22, startY + 9, 6, 5);
+        this.g2dBg.fillRect(startX + 28, startY + 0, 4, 18);
+        this.g2dBg.fillRect(startX + 38, startY + 0, 3, 18);
+        this.g2dBg.fillRect(startX + 41, startY + 9, 6, 5);
+        this.g2dBg.fillRect(startX + 41, startY + 0, 10, 4);
+        this.g2dBg.fillRect(startX + 47, startY + 4, 4, 5);
+        this.g2dBg.fillRect(startX + 47, startY + 13, 4, 5);
+        this.g2dBg.fillRect(startX + 57, startY + 0, 4,18);
+        this.g2dBg.fillRect(startX + 61, startY + 14, 5,4);
+        this.g2dBg.fillRect(startX + 66, startY + 0, 4,18);
+    }
+
+    /**
+     * Helper to draw the water wave
+     * @param startX
+     * @param startY
+     */
     private void drawWaterWave(int startX, int startY) {
         this.g2dBg.setColor(new Color(0, 35, 118));
         this.g2dBg.fillRect(startX + 14, startY + 0, 5, 5);
-
         this.g2dBg.fillRect(startX + 9, startY + 5, 15, 5);
         this.g2dBg.fillRect(startX + 0, startY + 10, 28, 5);
         this.g2dBg.fillRect(startX + 0, startY + 20, 28, 5);
@@ -131,6 +207,11 @@ public class Stage1 {
         this.g2dBg.fillRect(startX + 28, startY + 15, 11, 10);
     }
 
+    /**
+     * Helper to draw the left ladder
+     * @param startX
+     * @param startY
+     */
     private void drawLeftLadder(int startX, int startY) {
         this.g2dBg.setColor(new Color(65, 35, 0));
         this.g2dBg.fillRect(startX + 0, startY + 0, 19, 182);
@@ -159,7 +240,11 @@ public class Stage1 {
         this.g2dBg.fillRect(startX + 96, startY + 145, 39, 28);
     }
 
-
+    /**
+     * Helper to draw the flower
+     * @param startX
+     * @param startY
+     */
     private void drawFlower(int startX, int startY) {
         //caule
         this.g2dBg.setColor(new Color(0, 190, 0));
@@ -246,7 +331,11 @@ public class Stage1 {
         this.g2dBg.fillRect(startX + 12, startY + 9, 1, 1);
     }
 
-
+    /**
+     * Helper to draw the right ladder
+     * @param startX
+     * @param startY
+     */
     private void drawRightLadder(int startX, int startY) {
         this.g2dBg.setColor(new Color(65, 35, 0));
         this.g2dBg.fillRect(startX + 116, startY + 0, 19, 182);
@@ -273,32 +362,30 @@ public class Stage1 {
         this.g2dBg.fillRect(startX + 39, startY + 68, 39, 28);
         this.g2dBg.fillRect(startX + 19, startY + 106, 40, 29);
         this.g2dBg.fillRect(startX, startY + 145, 39, 28);
-        
     }
 
+    /**
+     * Helper to draw the central ladder
+     * @param startX
+     * @param startY
+     */
     private void drawCentralLadder(int startX, int startY) {
 
         this.g2dBg.setColor(new Color(153,128,121));
         this.g2dBg.fillRect(startX + 0, startY + 0, 18, 19);
         this.g2dBg.fillRect(startX + 38, startY + 0, 18, 19);
-
         this.g2dBg.fillRect(startX + 0, startY + 29, 18, 19);
         this.g2dBg.fillRect(startX + 38, startY + 29, 18, 19);
-
         this.g2dBg.fillRect(startX + 0, startY + 58, 18, 19);
         this.g2dBg.fillRect(startX + 38, startY + 58, 18, 19);
-
         this.g2dBg.fillRect(startX + 0, startY + 87, 18, 19);
         this.g2dBg.fillRect(startX + 38, startY + 87, 18, 19);
-
         this.g2dBg.fillRect(startX + 0, startY + 87, 18, 19);
         this.g2dBg.fillRect(startX + 38, startY + 87, 18, 19);
-
         this.g2dBg.fillRect(startX + 0, startY + 116, 18, 19);
         this.g2dBg.fillRect(startX + 38, startY + 116, 18, 19);
 
         this.g2dBg.setColor(new Color(65, 35, 0));
-
         this.g2dBg.fillRect(startX + 0, startY + 19, 56, 10);
         this.g2dBg.fillRect(startX + 0, startY + 48, 56, 10);
         this.g2dBg.fillRect(startX + 0, startY + 77, 56, 10);
@@ -308,12 +395,18 @@ public class Stage1 {
         this.g2dBg.fillRect(startX + 18, startY + 87, 20, 19);
     }
 
+    /**
+     * Helper to draw the barrel
+     * @param startX
+     * @param startY
+     */
     private void drawBarrel(int startX, int startY) {
+        //red
         this.g2dBg.setColor(new Color(134, 12, 0));
         this.g2dBg.fillRect(startX, startY, 40, 10);
         this.g2dBg.fillRect(startX, startY + 21, 40, 19);
         this.g2dBg.fillRect(startX, startY + 50, 40, 9);
-        
+        //brown
         this.g2dBg.setColor(new Color(186, 154, 118));
         this.g2dBg.fillRect(startX, startY + 10, 40, 11);
         this.g2dBg.fillRect(startX, startY + 40, 40, 10);
