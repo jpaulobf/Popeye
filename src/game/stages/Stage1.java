@@ -113,6 +113,12 @@ public class Stage1 {
            this.drawBarrel(384, 582);
            this.drawBarrel(384, 774);
 
+           //draw the left house base
+           this.drawLeftHouseBase(386, 314);
+
+           //draw the right house base
+           //this.drawRightHouseBase(1213, 314);
+
            //draw left signal
            this.drawLeftSignal(383, 366);
 
@@ -126,6 +132,39 @@ public class Stage1 {
            //flower
            this.drawFlower(684, 239);
         }
+    }
+
+    /**
+     * 
+     * @param startX
+     * @param startY
+     */
+    private void drawLeftHouseBase(int startX, int startY) {
+        this.g2dBg.setColor(new Color(132, 65, 0));
+        this.g2dBg.fillRect(startX + 0, startY + 19, 308, 9);
+
+        this.g2dBg.setColor(new Color(65, 34, 1));
+        this.g2dBg.fillRect(startX + 269, startY + 0, 76, 10);
+        this.g2dBg.fillRect(startX + 192, startY + 10, 77, 9);
+        this.g2dBg.fillRect(startX + 0, startY + 10, 114, 9);
+        this.g2dBg.fillRect(startX + 114, startY + 19, 78, 9);
+        this.g2dBg.fillRect(startX + 0, startY + 28, 19, 10);
+        this.g2dBg.fillRect(startX + 0, startY + 38, 57, 19);
+        this.g2dBg.fillRect(startX + 192, startY + 57, 77, 10);
+
+        this.g2dBg.setColor(new Color(132, 65, 0));
+        this.g2dBg.fillRect(startX + 269, startY + 10, 58, 9);
+        this.g2dBg.fillRect(startX + 18, startY + 28, 270, 10);
+        this.g2dBg.fillRect(startX + 37, startY + 38, 232, 9);
+        this.g2dBg.fillRect(startX + 192, startY + 47, 77, 10);
+        this.g2dBg.fillRect(startX + 192, startY + 47, 77, 10);
+
+        this.g2dBg.setColor(new Color(65, 34, 1));
+        this.g2dBg.fillRect(startX + 230, startY + 76, 19, 58);
+        this.g2dBg.fillRect(startX + 18, startY + 57, 19, 77);
+
+        this.g2dBg.setColor(new Color(37, 3, 6));
+        this.g2dBg.fillRect(startX + 230, startY + 67, 19, 9);
     }
 
     /**
@@ -169,7 +208,7 @@ public class Stage1 {
     }
 
     /**
-     * 
+     * Draw the thru word
      * @param startX
      * @param startY
      */
