@@ -51,7 +51,7 @@ public class LoadingStuffs {
             image = ImageIO.read(new File("images\\no.png"));
             images.put("lb-no", image);
 
-            image = ImageIO.read(new File("images\\splash.png"));
+            image = ImageIO.read(new File("images\\splash2.png"));
             images.put("splashImage", image);
 
             image = ImageIO.read(new File("images\\bean.png"));
@@ -60,7 +60,7 @@ public class LoadingStuffs {
             //------------------------------------------//
             //----------------- Menu -------------------//
             //------------------------------------------//
-            image = ImageIO.read(new File("images\\popeyelogo2.png"));
+            image = ImageIO.read(new File("images\\popeyelogo.png"));
             images.put("popeyelogo", image);
 
             image = ImageIO.read(new File("images\\selector.png"));
@@ -77,6 +77,78 @@ public class LoadingStuffs {
 
             image = ImageIO.read(new File("images\\lbExitGame.png"));
             images.put("lbExitGame", image);
+
+            //------------------------------------------//
+            //----------------- Options ----------------//
+            //------------------------------------------//
+            image = ImageIO.read(new File("images\\popeye_options.png"));
+            images.put("popeye-options", image);
+
+            image = ImageIO.read(new File("images\\options_logo.png"));
+            images.put("options-logo", image);
+
+            image = ImageIO.read(new File("images\\selector_options.png"));
+            images.put("selector-options", image);
+
+            image = ImageIO.read(new File("images\\toogle_off.png"));
+            images.put("toogle-off", image);
+
+            image = ImageIO.read(new File("images\\toogle_on.png"));
+            images.put("toogle-on", image);
+
+            image = ImageIO.read(new File("images\\toogle_on.png"));
+            images.put("toogle-on", image);
+            
+            image = ImageIO.read(new File("images\\lb_play_music.png"));
+            images.put("label-play-music", image);
+
+            image = ImageIO.read(new File("images\\lb_play_sfx.png"));
+            images.put("label-play-sfx", image);
+
+            image = ImageIO.read(new File("images\\lb_music_volume.png"));
+            images.put("label-music-vol", image);
+
+            image = ImageIO.read(new File("images\\lb_sfx_volume.png"));
+            images.put("label-sfx-vol", image);
+
+            image = ImageIO.read(new File("images\\lb_exit_option.png"));
+            images.put("label-exit-option", image);
+
+            image = ImageIO.read(new File("images\\v1_on.png"));
+            images.put("v1-on", image);
+
+            image = ImageIO.read(new File("images\\v2_on.png"));
+            images.put("v2-on", image);
+
+            image = ImageIO.read(new File("images\\v3_on.png"));
+            images.put("v3-on", image);
+
+            image = ImageIO.read(new File("images\\v4_on.png"));
+            images.put("v4-on", image);
+
+            image = ImageIO.read(new File("images\\v5_on.png"));
+            images.put("v5-on", image);
+
+            image = ImageIO.read(new File("images\\v6_on.png"));
+            images.put("v6-on", image);
+
+            image = ImageIO.read(new File("images\\v1_off.png"));
+            images.put("v1-off", image);
+
+            image = ImageIO.read(new File("images\\v2_off.png"));
+            images.put("v2-off", image);
+
+            image = ImageIO.read(new File("images\\v3_off.png"));
+            images.put("v3-off", image);
+
+            image = ImageIO.read(new File("images\\v4_off.png"));
+            images.put("v4-off", image);
+
+            image = ImageIO.read(new File("images\\v5_off.png"));
+            images.put("v5-off", image);
+
+            image = ImageIO.read(new File("images\\v6_off.png"));
+            images.put("v6-off", image);
 
             //------------------------------------------//
             //-------------- GameOver ------------------//
@@ -98,6 +170,11 @@ public class LoadingStuffs {
             audio = new Audio("audio\\closing.wav", 0, Audio.SFX);
             if (audio != null && audio.isReady()) {
                 audios.put("closing", audio);
+            }
+
+            audio = new Audio("audio\\theme1.wav", 0, Audio.MUSIC);
+            if (audio != null && audio.isReady()) {
+                audios.put("theme1", audio);
             }
 
             //------------------------------------------//
