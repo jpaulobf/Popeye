@@ -13,9 +13,9 @@ public class GameMusicSFX {
 
 
     private List<Audio> audioList   = new ArrayList<Audio>();
-    private volatile Audio theme            = null;
-    private volatile boolean mute           = false;
-    private GameInterface gameRef           = null;
+    private volatile Audio theme    = null;
+    private volatile boolean mute   = false;
+    private Game gameRef            = null;
 
     /**
      * Constructor
@@ -23,7 +23,11 @@ public class GameMusicSFX {
      */
     public GameMusicSFX(GameInterface game) {
 
-        this.gameRef = game;
+        this.gameRef = (Game)game;
+
+        if (this.gameRef.getGameLevel().getCurrentLevel() == GameLevel.FIRST_LEVEL) {
+            this.theme = LoadingStuffs.getInstance().getAudio("theme1");
+        }
 
         //get the audio list
         this.audioList = LoadingStuffs.getInstance().getAudioList();
