@@ -128,11 +128,10 @@ public class Game implements GameInterface {
                 //sum framecounter
                 this.framecounter += frametime;
 
-                /*
                 //update just one time
                 if (this.framecounter == frametime) { 
                     //if necessary
-                    //this.options.firstUpdate(frametime);
+                    this.options.firstUpdate(frametime);
                 
                 } else {
 
@@ -150,8 +149,6 @@ public class Game implements GameInterface {
                         this.skipDraw = true;
                     }
                 }
-                 */
-
             } else if (this.gameState.getCurrentState() == StateMachine.STAGING) {
                 
                 //sum framecounter
