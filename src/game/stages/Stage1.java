@@ -2,6 +2,7 @@ package game.stages;
 
 import game.GameStage;
 import java.awt.image.VolatileImage;
+import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
@@ -14,11 +15,17 @@ public class Stage1 {
     //---------------------------------------------------------//
     //---                   Properties                      ---//
     //---------------------------------------------------------//
-    private GameStage gameStageRef      = null;
-    private VolatileImage bgBufferImage = null;
-    private Graphics2D g2dBg            = null;
-    private int windowWidth             = 0;
-    private int windowHeight            = 0;
+    private GameStage gameStageRef          = null;
+    private VolatileImage bgBufferImage     = null;
+    private BufferedImage bgSpinashImage    = null;
+    private Graphics2D g2dBg                = null;
+    private Graphics2D g2dSp                = null;
+    private int windowWidth                 = 0;
+    private int windowHeight                = 0;
+    private boolean spinashTop              = true;
+    private short spinashX                  = 366;
+    private short spinashY                  = 543;
+    private long framecounter               = 0;
 
     /**
      * Constructor
@@ -29,6 +36,7 @@ public class Stage1 {
         this.windowHeight   = windowHeight;
         this.windowWidth    = windowWidth;
         this.drawBG();
+        this.drawSpinashCan();
     }
 
     /**
@@ -36,7 +44,17 @@ public class Stage1 {
      * @param frametime
      */
     public void update(long frametime) {
+        this.framecounter += frametime;
+        if (this.framecounter >= 4_000_000_000L) {
+            this.framecounter = 0;
+            this.toogleSpinash();
 
+            if (this.spinashTop) {
+                this.spinashY = 543;
+            } else {
+                this.spinashY = 735;
+            }
+        }
     }
 
     public void draw(long frametime) {
@@ -47,7 +65,93 @@ public class Stage1 {
         //Draw the static bg
         this.gameStageRef.getG2D().drawImage(this.bgBufferImage, 0, 0, null);
 
-        //...
+        //draw the spinash
+        this.gameStageRef.getG2D().drawImage(this.bgSpinashImage, this.spinashX, this.spinashY, null);
+    }
+
+    /**
+     * Draw the spinash can
+     */
+    private void drawSpinashCan() {
+        //create a backbuffer image for doublebuffer
+        this.bgSpinashImage  = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(38, 39);
+        this.g2dSp          = (Graphics2D)bgSpinashImage.getGraphics();
+
+        this.g2dSp.setColor(new Color(3, 12, 255));
+        this.g2dSp.fillRect(9, 12, 26, 27);
+
+        this.g2dSp.setColor(new Color(0, 51, 150));
+        this.g2dSp.fillRect(33, 13, 1, 26);
+        this.g2dSp.fillRect(8, 12, 27, 1);
+        this.g2dSp.fillRect(10, 13, 1, 26);
+
+        this.g2dSp.setColor(new Color(0, 26, 187));
+        this.g2dSp.fillRect(10, 13, 25, 1);
+
+        this.g2dSp.setColor(new Color(181, 184, 249));
+        this.g2dSp.fillRect(9, 36, 26, 3);
+
+        this.g2dSp.setColor(new Color(0, 161, 55));
+        this.g2dSp.fillRect(9, 31, 26, 3);
+        
+        this.g2dSp.setColor(new Color(0, 0, 59));
+        this.g2dSp.fillRect(34, 13, 1, 26);
+        this.g2dSp.fillRect(9, 13, 1, 26);
+
+        this.g2dSp.setColor(new Color(0, 166, 16));
+        this.g2dSp.fillRect(13, 20, 4, 2);
+        this.g2dSp.fillRect(13, 21, 2, 3);
+        this.g2dSp.fillRect(15, 24, 2, 4);
+        this.g2dSp.fillRect(13, 26, 3, 2);
+        this.g2dSp.fillRect(20, 20, 2, 8);
+        this.g2dSp.fillRect(22, 24, 2, 2);
+        this.g2dSp.fillRect(24, 20, 2, 4);
+        this.g2dSp.fillRect(22, 20, 2, 2);
+        this.g2dSp.fillRect(29, 20, 3, 8);
+
+        this.g2dSp.setColor(new Color(0, 51, 150));
+        this.g2dSp.fillRect(13, 19, 3, 1);
+        this.g2dSp.fillRect(12, 19, 1, 4);
+        this.g2dSp.fillRect(20, 19, 5, 1);
+        this.g2dSp.fillRect(19, 19, 1, 9);
+        this.g2dSp.fillRect(28, 19, 3, 1);
+        this.g2dSp.fillRect(28, 20, 1, 8);
+
+        this.g2dSp.setColor(new Color(0, 93, 63));
+        this.g2dSp.fillRect(33, 31, 1, 3);
+
+        this.g2dSp.setColor(new Color(181, 184, 249));
+        this.g2dSp.fillRect(12, 31, 3, 3);
+        this.g2dSp.fillRect(12, 12, 3, 5);
+
+        this.g2dSp.setColor(new Color(0, 93, 63));
+        this.g2dSp.fillRect(8, 4, 25, 8);
+        this.g2dSp.fillRect(5, 13, 4, 3);
+        this.g2dSp.fillRect(8, 16, 1, 3);
+        this.g2dSp.fillRect(3, 10, 2, 2);
+        this.g2dSp.fillRect(12, 2, 2, 2);
+        this.g2dSp.setColor(new Color(0, 185, 0));
+        this.g2dSp.fillRect(3, 16, 5, 4);
+        this.g2dSp.fillRect(2, 16, 1, 3);
+        this.g2dSp.fillRect(0, 12, 5, 5);
+        this.g2dSp.fillRect(5, 10, 3, 3);
+        this.g2dSp.fillRect(2, 7, 6, 3);
+        this.g2dSp.fillRect(2, 5, 1, 2);
+        this.g2dSp.fillRect(3, 4, 6, 3);
+        this.g2dSp.fillRect(5, 2, 3, 2);
+        this.g2dSp.fillRect(8, 0, 4, 4);
+        this.g2dSp.fillRect(14, 0, 6, 4);
+        this.g2dSp.fillRect(20, 2, 2, 2);
+        this.g2dSp.fillRect(17, 4, 3, 3);
+        this.g2dSp.fillRect(11, 7, 9, 4);
+        this.g2dSp.fillRect(23, 7, 3, 3);
+        this.g2dSp.fillRect(29, 7, 3, 3);
+
+        this.g2dSp.setColor(new Color(181, 184, 249));
+        this.g2dSp.fillRect(22, 0, 12, 4);
+        this.g2dSp.fillRect(30, 3, 6, 3);
+        this.g2dSp.fillRect(33, 6, 5, 3);
+        this.g2dSp.fillRect(33, 9, 3, 4);
     }
 
     /**
@@ -64,9 +168,23 @@ public class Stage1 {
             this.g2dBg.setBackground(Color.BLACK);
             this.g2dBg.clearRect(0, 0, this.windowWidth, this.windowHeight);
             
+            //draw left house
+            this.drawLeftHouse(404, 44);
+
+            //draw right house
+            this.drawRightHouse(1271, 53);
+
             //upper path of the level
             this.g2dBg.setColor(new Color(57, 112, 0));
             this.g2dBg.fillRect(386, 303, 1155, 11);
+            this.g2dBg.fillRect(1308, 314, 214, 10);
+            this.g2dBg.fillRect(655, 294, 20, 9);
+            this.g2dBg.fillRect(674, 285, 38, 18);
+            this.g2dBg.fillRect(712, 294, 19, 9);
+            this.g2dBg.fillRect(386, 314, 269, 10);
+            this.g2dBg.fillRect(500, 324, 78, 9);
+            this.g2dBg.fillRect(1233, 285, 38, 19);
+            this.g2dBg.fillRect(1214, 294, 19, 9);
 
             //central paths of the level
             this.g2dBg.setColor(new Color(99, 100, 122));
@@ -76,7 +194,15 @@ public class Stage1 {
             this.g2dBg.fillRect(366, 833, 1195, 20);
             this.g2dBg.fillRect(366, 833, 1195, 20);
 
+            //draw the grass
+            this.drawGrass(343, 274);
+            this.drawGrass(1229, 274);
+            this.drawGrass(1460, 274);
+            this.g2dBg.setColor(Color.BLACK);
+            this.g2dBg.fillRect(343, 284, 41, 25);
+
             //bottom path
+            this.g2dBg.setColor(new Color(99, 100, 122));
             this.g2dBg.fillRect(344, 1026, 1232, 55);
             this.g2dBg.setColor(new Color(39, 80, 0));
             this.g2dBg.fillRect(924, 1017, 58, 9);
@@ -117,7 +243,7 @@ public class Stage1 {
            this.drawLeftHouseBase(386, 314);
 
            //draw the right house base
-           //this.drawRightHouseBase(1213, 314);
+           this.drawRightHouseBase(1213, 314);
 
            //draw left signal
            this.drawLeftSignal(383, 366);
@@ -135,7 +261,229 @@ public class Stage1 {
     }
 
     /**
-     * 
+     * Draw the right house
+     * @param startX
+     * @param startY
+     */
+    private void drawRightHouse(int startX, int startY) {
+        this.g2dBg.setColor(new Color(191, 153, 118));
+        this.g2dBg.fillRect(startX + 39, startY + 97, 192, 153);
+        
+        this.g2dBg.setColor(new Color(0, 4, 87));
+        this.g2dBg.fillRect(startX + 57, startY + 125, 155, 107);
+
+        this.g2dBg.setColor(new Color(97, 99, 85));
+        this.g2dBg.fillRect(startX + 39, startY + 97, 192, 9);
+
+        this.g2dBg.setColor(new Color(195, 94, 0));
+        this.g2dBg.fillRect(startX + 0, startY + 29, 270, 68);
+        this.g2dBg.fillRect(startX + 19, startY + 19, 232, 10);
+        this.g2dBg.fillRect(startX + 39, startY + 10, 192, 9);
+        this.g2dBg.fillRect(startX + 58, startY + 0, 154, 10);
+
+        this.g2dBg.setColor(new Color(129, 11, 0));
+        this.g2dBg.fillRect(startX + 96, startY + 10, 39, 9);
+        this.g2dBg.fillRect(startX + 231, startY + 29, 20, 10);
+        this.g2dBg.fillRect(startX + 250, startY + 77, 20, 10);
+        this.g2dBg.fillRect(startX + 154, startY + 86, 39, 11);
+        this.g2dBg.fillRect(startX + 57, startY + 86, 59, 11);
+        this.g2dBg.fillRect(startX + 0, startY + 86, 19, 11);
+        this.g2dBg.fillRect(startX + 19, startY + 58, 19, 9);
+        this.g2dBg.fillRect(startX + 0, startY + 38, 19, 10);
+
+        this.g2dBg.setColor(new Color(0, 4, 87));
+        this.g2dBg.fillRect(startX + 58, startY + 28, 154, 40);
+
+        this.g2dBg.setColor(new Color(229, 211, 0));
+        this.g2dBg.fillRect(startX + 84, startY + 28, 15, 6);
+        this.g2dBg.fillRect(startX + 79, startY + 34, 11, 5);
+        this.g2dBg.fillRect(startX + 94, startY + 33, 10, 6);
+        this.g2dBg.fillRect(startX + 79, startY + 39, 6, 19);
+        this.g2dBg.fillRect(startX + 89, startY + 38, 11, 6);
+        this.g2dBg.fillRect(startX + 94, startY + 41, 6, 17);
+        this.g2dBg.fillRect(startX + 88, startY + 53, 6, 10);
+        this.g2dBg.fillRect(startX + 84, startY + 53, 6, 10);
+
+        this.g2dBg.fillRect(startX + 113, startY + 28, 6, 6);
+        this.g2dBg.fillRect(startX + 108, startY + 34, 6, 15);
+        this.g2dBg.fillRect(startX + 118, startY + 34, 6, 15);
+        this.g2dBg.fillRect(startX + 113, startY + 48, 6, 6);
+        this.g2dBg.fillRect(startX + 108, startY + 53, 6, 6);
+        this.g2dBg.fillRect(startX + 118, startY + 53, 6, 6);
+        this.g2dBg.fillRect(startX + 123, startY + 57, 10, 6);
+
+        this.g2dBg.fillRect(startX + 132, startY + 38, 6, 6);
+        this.g2dBg.fillRect(startX + 132, startY + 48, 6, 10);
+        this.g2dBg.fillRect(startX + 136, startY + 52, 6, 6);
+        this.g2dBg.fillRect(startX + 142, startY + 47, 6, 6);
+        this.g2dBg.fillRect(startX + 147, startY + 43, 6, 20);
+        this.g2dBg.fillRect(startX + 151, startY + 53, 6, 6);
+        this.g2dBg.fillRect(startX + 157, startY + 43, 6, 11);
+        this.g2dBg.fillRect(startX + 162, startY + 48, 6, 6);
+        this.g2dBg.fillRect(startX + 166, startY + 43, 6, 15);
+        this.g2dBg.fillRect(startX + 170, startY + 38, 11, 6);
+        this.g2dBg.fillRect(startX + 172, startY + 48, 9, 6);
+        this.g2dBg.fillRect(startX + 171, startY + 57, 15, 6);
+        this.g2dBg.fillRect(startX + 180, startY + 43, 6, 6);
+    }
+
+    /**
+     * Draw left house
+     * @param startX
+     * @param startY
+     */
+    private void drawLeftHouse(int startX, int startY) {
+        this.g2dBg.setColor(new Color(191, 153, 118));
+        this.g2dBg.fillRect(startX + 17, startY + 104, 234, 156);
+
+        this.g2dBg.setColor(Color.BLACK);
+        this.g2dBg.fillRect(startX + 96, startY + 146, 73, 73);
+
+        this.g2dBg.setColor(new Color(97, 99, 85));
+        this.g2dBg.fillRect(startX + 19, startY + 106, 232, 9);
+
+        this.g2dBg.setColor(new Color(70, 37, 0));
+        this.g2dBg.fillRect(startX + 16, startY + 106, 232, 1);
+        this.g2dBg.fillRect(startX + 246, startY + 106, 2, 153);
+        this.g2dBg.fillRect(startX + 16, startY + 257, 232, 2);
+        this.g2dBg.fillRect(startX + 16, startY + 106, 3, 152);
+        this.g2dBg.fillRect(startX + 19, startY + 142, 227, 4);
+        this.g2dBg.fillRect(startX + 19, startY + 181, 227, 4);
+        this.g2dBg.fillRect(startX + 19, startY + 219, 227, 4);
+        this.g2dBg.fillRect(startX + 53, startY + 107, 4, 150);
+        this.g2dBg.fillRect(startX + 92, startY + 107, 4, 150);
+        this.g2dBg.fillRect(startX + 131, startY + 107, 4, 150);
+        this.g2dBg.fillRect(startX + 169, startY + 107, 4, 150);
+        this.g2dBg.fillRect(startX + 208, startY + 107, 4, 150);
+
+        this.g2dBg.setColor(new Color(135, 63, 0));
+        this.g2dBg.fillRect(startX + 0, startY + 0, 96, 18);
+
+        this.g2dBg.setColor(new Color(105, 9, 0));
+        this.g2dBg.fillRect(startX + 19, startY + 18, 59, 10);
+
+        this.g2dBg.setColor(new Color(195, 94, 0));
+        this.g2dBg.fillRect(startX + 19, startY + 28, 59, 10);
+        this.g2dBg.fillRect(startX + 0, startY + 38, 270, 68);
+
+        this.g2dBg.setColor(new Color(129, 11, 0));
+        this.g2dBg.fillRect(startX + 0, startY + 38, 19, 20);
+        this.g2dBg.fillRect(startX + 19, startY + 57, 59, 10);
+        this.g2dBg.fillRect(startX + 80, startY + 43, 35, 5);
+        this.g2dBg.fillRect(startX + 78, startY + 38, 2, 5);
+        this.g2dBg.fillRect(startX + 250, startY + 47, 20, 10);
+        this.g2dBg.fillRect(startX + 231, startY + 67, 20, 10);
+        this.g2dBg.fillRect(startX + 19, startY + 86, 40, 10);
+        this.g2dBg.fillRect(startX + 251, startY + 86, 19, 10);
+        this.g2dBg.fillRect(startX + 77, startY + 96, 20, 10);
+        this.g2dBg.fillRect(startX + 135, startY + 96, 38, 10);
+
+        this.g2dBg.setColor(new Color(0, 4, 98));
+        this.g2dBg.fillRect(startX + 77, startY + 48, 136, 39);
+
+        this.g2dBg.setColor(new Color(203, 191, 38));
+        this.g2dBg.fillRect(startX + 80, startY + 38, 126, 5);
+        this.g2dBg.fillRect(startX + 75, startY + 43, 5, 5);
+        this.g2dBg.fillRect(startX + 206, startY + 43, 5, 5);
+
+
+        this.g2dBg.fillRect(startX + 80, startY + 52, 9, 30);
+        this.g2dBg.fillRect(startX + 89, startY + 52, 6, 6);
+        this.g2dBg.fillRect(startX + 89, startY + 66, 6, 6);
+        this.g2dBg.fillRect(startX + 94, startY + 57, 5, 10);
+
+        this.g2dBg.fillRect(startX + 103, startY + 52, 16, 5);
+        this.g2dBg.fillRect(startX + 103, startY + 57, 5, 25);
+        this.g2dBg.fillRect(startX + 108, startY + 71, 11, 11);
+        this.g2dBg.fillRect(startX + 114, startY + 57, 5, 14);
+
+        this.g2dBg.fillRect(startX + 123, startY + 52, 9, 30);
+        this.g2dBg.fillRect(startX + 132, startY + 52, 6, 6);
+        this.g2dBg.fillRect(startX + 132, startY + 66, 6, 6);
+        this.g2dBg.fillRect(startX + 137, startY + 57, 5, 10);
+
+        this.g2dBg.fillRect(startX + 146, startY + 52, 9, 30);
+        this.g2dBg.fillRect(startX + 155, startY + 71, 6, 11);
+        this.g2dBg.fillRect(startX + 155, startY + 62, 6, 5);
+        this.g2dBg.fillRect(startX + 155, startY + 52, 6, 6);
+        
+        this.g2dBg.fillRect(startX + 165, startY + 52, 10, 15);
+        this.g2dBg.fillRect(startX + 170, startY + 67, 11, 15);
+        this.g2dBg.fillRect(startX + 179, startY + 52, 6, 15);
+
+        this.g2dBg.fillRect(startX + 189, startY + 52, 9, 30);
+        this.g2dBg.fillRect(startX + 198, startY + 71, 6, 11);
+        this.g2dBg.fillRect(startX + 198, startY + 62, 6, 5);
+        this.g2dBg.fillRect(startX + 198, startY + 52, 6, 6);
+    }
+
+    /**
+     * Draw the grass
+     * @param startX
+     * @param startY
+     */
+    private void drawGrass(int startX, int startY) {
+        this.g2dBg.setColor(new Color(0, 196, 85));
+        this.g2dBg.fillRect(startX + 58, startY + 0, 6, 6);
+        this.g2dBg.fillRect(startX + 54, startY + 5, 10, 6);
+        this.g2dBg.fillRect(startX + 20, startY + 10, 6, 6);
+        this.g2dBg.fillRect(startX + 35, startY + 10, 6, 6);
+        this.g2dBg.fillRect(startX + 49, startY + 10, 10, 6);
+        this.g2dBg.fillRect(startX + 68, startY + 10, 6, 6);
+        this.g2dBg.fillRect(startX + 15, startY + 15, 6, 6);
+        this.g2dBg.fillRect(startX + 35, startY + 15, 6, 6);
+        this.g2dBg.fillRect(startX + 45, startY + 15, 14, 6);
+        this.g2dBg.fillRect(startX + 64, startY + 16, 14, 4);
+        this.g2dBg.fillRect(startX + 10, startY + 20, 16, 6);
+        this.g2dBg.fillRect(startX + 30, startY + 20, 48, 6);
+        this.g2dBg.fillRect(startX + 5, startY + 24, 73, 6);
+        this.g2dBg.fillRect(startX + 0, startY + 29, 6, 6);
+        this.g2dBg.fillRect(startX + 10, startY + 29, 6, 6);
+        this.g2dBg.fillRect(startX + 24, startY + 29, 6, 6);
+        this.g2dBg.fillRect(startX + 39, startY + 29, 6, 6);
+        this.g2dBg.fillRect(startX + 54, startY + 29, 6, 6);
+        this.g2dBg.fillRect(startX + 69, startY + 29, 9, 6);
+    }
+
+    /**
+     * Draw the right house bases
+     * @param startX
+     * @param startY
+     */
+    private void drawRightHouseBase(int startX, int startY) {
+        this.g2dBg.setColor(new Color(65, 34, 1));
+        this.g2dBg.fillRect(startX + 0, startY + 0, 95, 10);
+        this.g2dBg.fillRect(startX + 309, startY + 0, 19, 10);
+        this.g2dBg.fillRect(startX + 95, startY + 10, 214, 9);
+        this.g2dBg.fillRect(startX + 95, startY + 10, 214, 9);
+
+        this.g2dBg.setColor(new Color(132, 65, 0));
+        this.g2dBg.fillRect(startX + 20, startY + 10, 75, 9);
+        this.g2dBg.fillRect(startX + 309, startY + 10, 19, 9);
+        this.g2dBg.fillRect(startX + 40, startY + 19, 288, 9);
+        this.g2dBg.fillRect(startX + 58, startY + 28, 251, 10);
+        this.g2dBg.fillRect(startX + 77, startY + 47, 77, 10);
+        this.g2dBg.fillRect(startX + 77, startY + 47, 77, 10);
+
+        this.g2dBg.setColor(new Color(65, 34, 1));
+        this.g2dBg.fillRect(startX + 77, startY + 57, 77, 10);
+        this.g2dBg.fillRect(startX + 309, startY + 28, 19, 10);
+        this.g2dBg.fillRect(startX + 270, startY + 38, 58, 19);
+
+        this.g2dBg.setColor(new Color(132, 65, 0));
+        this.g2dBg.fillRect(startX + 77, startY + 38, 212, 9);
+
+        this.g2dBg.setColor(new Color(37, 3, 6));
+        this.g2dBg.fillRect(startX + 95, startY + 67, 19, 9);
+
+        this.g2dBg.setColor(new Color(65, 34, 1));
+        this.g2dBg.fillRect(startX + 95, startY + 76, 19, 58);
+        this.g2dBg.fillRect(startX + 289, startY + 57, 19, 77);
+
+    }
+
+    /**
+     * Draw the left house bases
      * @param startX
      * @param startY
      */
@@ -449,5 +797,12 @@ public class Stage1 {
         this.g2dBg.setColor(new Color(186, 154, 118));
         this.g2dBg.fillRect(startX, startY + 10, 40, 11);
         this.g2dBg.fillRect(startX, startY + 40, 40, 10);
+    }
+
+    /**
+     * Toogle spinash position
+     */
+    private void toogleSpinash() {
+        this.spinashTop = !this.spinashTop;
     }
 }
