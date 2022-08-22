@@ -3,6 +3,7 @@ package engine;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Graphics2D;
@@ -40,6 +41,8 @@ public class Popeye implements Runnable {
         private int fullScreenXPos                  = 0;
         private int fullScreenYPos                  = 0;
         private int fullscreenState                 = 0;
+        private int gameInternalResolutionW         = 0;
+        private int gameInternalResolutionH         = 0;
         
         //the first 'canvas' & the backbuffer (for simple doublebuffer strategy)
         private JPanel canvas                       = null;
@@ -139,7 +142,9 @@ public class Popeye implements Runnable {
             this.game = GameFactory.getGameInstance();
 
             //recover the pointer to the buffer graphics2d
-            this.g2d  = this.game.getG2D();
+            this.g2d                     = this.game.getG2D();
+            this.gameInternalResolutionW = this.game.getInternalResolutionWidth();
+            this.gameInternalResolutionH = this.game.getInternalResolutionHeight();
 
             //thread para o controle (quando presente)
             //this.controller = new JoystickController(this);
@@ -214,14 +219,13 @@ public class Popeye implements Runnable {
                     //render the game elements
                     this.game.draw(frametime);
 
+                    this.renderFPSLayer((Graphics2D)this.game.getBufferedImage().getGraphics(), frametime, this.gameInternalResolutionW, this.gameInternalResolutionH);
+
                     //At least, copy the backbuffer to the canvas screen
                     this.canvas.getGraphics().drawImage(this.game.getBufferedImage(), 0, 0, this.windowWidth, this.windowHeight, //destine
-                                                                                      0, 0, game.getInternalResolutionWidth(), 
-                                                                                                     game.getInternalResolutionHeight(), //source
+                                                                                      0, 0, this.gameInternalResolutionW, 
+                                                                                            this.gameInternalResolutionH, //source
                                                                                       this);
-
-                                                                                      //render the fps counter
-                    this.renderFPSLayer((Graphics2D)this.canvas.getGraphics(), frametime, this.windowWidth, this.windowHeight);
                 }
             }
         }
