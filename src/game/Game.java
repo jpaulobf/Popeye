@@ -26,6 +26,8 @@ public class Game implements GameInterface {
     private volatile boolean skipDraw       = false;
 
     //width and height of window for base metrics of the game
+    //don't change this values unless you are changing the 
+    //image elements resolution 
     private final int wwm                   = 1920;
     private final int whm                   = 1080;
 
@@ -70,8 +72,6 @@ public class Game implements GameInterface {
         this.screenT            = new ScreenTransition(this);
         this.exitScreen         = new ExitScreen(this, this.wwm, this.whm);
         this.gameOver           = new GameOver(this, this.wwm, this.whm);
-
-        
     }
     
     /**
@@ -384,6 +384,7 @@ public class Game implements GameInterface {
                 if (keyCode == M)   {this.gameMusicSFX.toogleMuteTheme();   }
                 if (keyCode == P)   {this.tooglePause();                    }
                 if (keyCode == R)   {this.softReset();                      }
+                this.gameStage.release(keyCode);
             }
         }
     }
