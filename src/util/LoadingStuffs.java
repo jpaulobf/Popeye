@@ -58,6 +58,12 @@ public class LoadingStuffs {
             images.put("bean", image);
 
             //------------------------------------------//
+            //----------------- Sprites ----------------//
+            //------------------------------------------//
+            image = ImageIO.read(new File("images\\popeye.png"));
+            images.put("popeye-sprite", image);
+
+            //------------------------------------------//
             //----------------- Menu -------------------//
             //------------------------------------------//
             image = ImageIO.read(new File("images\\popeyelogo.png"));
