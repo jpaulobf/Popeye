@@ -19,7 +19,7 @@ public abstract class SpriteImpl implements Sprite, Directions {
     protected volatile double destPositionY     = 0;
     protected volatile double calculatedStep    = 0D;
     protected volatile short width              = 0;
-    protected volatile byte height              = 0;
+    protected volatile short height             = 0;
     protected volatile byte offsetTop           = 0;
     protected volatile byte offsetLeft          = 0;
     protected volatile int ogPositionX          = 0;
@@ -32,12 +32,26 @@ public abstract class SpriteImpl implements Sprite, Directions {
      * @return
      */
     public short getWidth()                     {   return (this.width);            }
+    public short getHeight()                    {   return (this.height);           }
     public byte getDirection()                  {   return (this.direction);        }
     public double getPositionX()                {   return (this.positionX);        }
     public double getCalculatedStep()           {   return (this.calculatedStep);   }
     public void setScenarioOffsetX(int offsetX) {   this.scenarioOffsetX = offsetX; }
     public void setScenarioOffsetY(int offsetY) {   this.scenarioOffsetY = offsetY; }
     public int getType()                        {   return (this.type);             }
+
+    public void addPositionX()                  {   this.addPositionX(2);           }
+    public void decPositionX()                  {   this.addPositionX(-2);          }
+    public void addPositionX(double add)        {   this.positionX+=add;            }
+    public void addPositionY()                  {   this.addPositionY(2);           }
+    public void decPositionY()                  {   this.addPositionY(-2);          }
+    public void addPositionY(double add)        {   this.positionY+=add;            }
+
+
+    public abstract void enableLeftFlag();
+    public abstract void disableLeftFlag();
+    public abstract void enableRightFlag();
+    public abstract void disableRightFlag();
     
     /**
      * Abstract methods
