@@ -9,10 +9,6 @@ import game.stages.Stage1;
  */
 public class GameStage {
 
-	//constants
-
-	//images
-	
 	//Game variables
 	private volatile boolean stopped 				= false;
 
@@ -35,23 +31,6 @@ public class GameStage {
 		this.windowHeight   	= windowHeight;
         this.windowWidth    	= windowWidth;
 		this.stage1				= new Stage1(this, this.windowWidth, this.windowHeight);
-
-		//create the main game image structure
-		// this.gameBoardBG			= GraphicsEnvironment.getLocalGraphicsEnvironment()
-		// 												 .getDefaultScreenDevice().getDefaultConfiguration()
-		// 												 .createCompatibleImage(bgwidth, bgheight, Transparency.TRANSLUCENT);
-		
-		//get the G2D (from backbuffered image)
-		// this.bg2d					= (Graphics2D)this.gameBoardBG.getGraphics();
-
-
-		//just one, draw game background
-		// this.drawGameBoardBG();
-
-
-		//calc the render position
-		// this.renderPositionX 		= (short)((this.gameRef.getInternalResolutionWidth() / 2) - (this.boardSquareWidth / 2) - (BOARD_LEFT + 60));
-		// this.renderPositionY 		= (short)((this.gameRef.getInternalResolutionHeight() / 2) - (this.boardSquareHeight / 2) - BOARD_TOP);
 	}
 
 	/**
@@ -59,7 +38,6 @@ public class GameStage {
 	 */
 	public void update(long frametime) {
 		if (!this.stopped) {
-			
 			//add framecounter
 			this.framecounter += frametime;
 
@@ -85,8 +63,6 @@ public class GameStage {
 		}
 	}
 
-	
-
 	//----------------------------------------------------//
     //------------------- Movements ----------------------//
     //----------------------------------------------------//
@@ -96,17 +72,19 @@ public class GameStage {
 	 */
 	public synchronized void move(int keyCode) {
 		if (!this.stopped) {
-			if (keyCode == 39) { //right
-			
-			} else if (keyCode == 37) { //left
-			
-			} else if (keyCode == 38) { //up
-			
-			} else if (keyCode == 40) { //down
-			
-			} else if (keyCode == 32) { //space
-
+			if (this.gameLevelRef.getCurrentLevel() == GameLevel.FIRST_LEVEL) {
+				this.stage1.move(keyCode);
 			}
+		}
+	}
+
+	/**
+	 * Release Key
+	 * @param keyCode
+	 */
+	public synchronized void release(int keyCode) {
+		if (this.gameLevelRef.getCurrentLevel() == GameLevel.FIRST_LEVEL) {
+			this.stage1.releaseKey(keyCode);
 		}
 	}
 
@@ -117,6 +95,9 @@ public class GameStage {
 	 * Reset game method
 	 */
 	public synchronized void resetGame() {
+		if (this.gameLevelRef.getCurrentLevel() == GameLevel.FIRST_LEVEL) {
+			this.stage1.reset();
+		}
 	}
 
 	/**
@@ -125,7 +106,6 @@ public class GameStage {
 	public void tooglePause() {
 		this.stopped = !this.stopped;
 	}
-
 
     //----------------------------------------------------//
     //------------------- Accessors ----------------------//
