@@ -94,7 +94,7 @@ public class PopeyeSprite extends SpriteImpl {
             //if want to go down
             if (this.enableBottom) {
                 //central ladder
-                if (currentLevel == 1 && this.positionX > 910 && this.positionX < 934) {
+                if (currentLevel == 1 && this.positionX > 892 && this.positionX < 954) {
                     this.currentLevel++;
                     this.positionY += 192;
                     this.positionYInt = (int)this.positionY;
