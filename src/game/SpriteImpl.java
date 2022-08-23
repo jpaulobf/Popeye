@@ -52,6 +52,10 @@ public abstract class SpriteImpl implements Sprite, Directions {
     public abstract void disableLeftFlag();
     public abstract void enableRightFlag();
     public abstract void disableRightFlag();
+    public abstract void enableBottomFlag();
+    public abstract void disableBottomFlag();
+    public abstract void enableTopFlag();
+    public abstract void disableTopFlag();
     
     /**
      * Abstract methods
