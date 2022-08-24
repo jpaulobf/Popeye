@@ -202,7 +202,9 @@ public class Stage1 implements StageInterface {
 			this.popeyeSprite.disableRightFlag();
         } else if (keyCode == 37) { //left
             this.popeyeSprite.disableLeftFlag();
-        }else if (keyCode == 40) { //down
+        } else if (keyCode == 38) { //up
+            this.popeyeSprite.disableTopFlag();
+        } else if (keyCode == 40) { //down
             this.popeyeSprite.disableBottomFlag();
         }
     }
