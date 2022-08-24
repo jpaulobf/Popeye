@@ -194,6 +194,8 @@ public class Stage1 implements StageInterface {
             this.popeyeSprite.enableBottomFlag();
         } else if (keyCode == 32) { //space
             System.out.println(this.popeyeSprite.getPositionX());
+            System.out.println(this.popeyeSprite.getCurrentLevel());
+            
         }
     }
 
