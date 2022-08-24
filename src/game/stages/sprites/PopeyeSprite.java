@@ -72,17 +72,29 @@ public class PopeyeSprite extends SpriteImpl {
         }
 
         if (currentLevel == 0) {
+            
+            //thru
             if (this.positionX > 1560) {
-                this.positionX      = 302;
+                this.positionX = 302;
             } else if (this.positionX < 298) {
-                this.positionX      = 1560;
+                this.positionX = 1560;
             }
 
+            //center (no path)
             if (this.positionX > 649 && this.positionX < 1218) {
                 this.currentLevel   = 1;
                 this.positionY += 192;
                 this.positionYInt = (int)this.positionY;
             }
+
+            //left ladder
+            if (this.enableBottom && this.positionX > 425 && this.positionX < 459) {
+                currentLevel++;
+                this.positionY += 192;
+                this.positionYInt = (int)this.positionY;
+                this.enableBottom = false;
+            }
+            
         } else {
             //lock the sides
             if (this.positionX < 367) {
@@ -102,17 +114,27 @@ public class PopeyeSprite extends SpriteImpl {
                 }
 
                 //left ladder
-                if (this.positionX > 411 && this.positionX < 457) {
-                    if (this.currentLevel < 3) this.currentLevel++;
-                    this.positionY += 192;
-                    this.positionYInt = (int)this.positionY;
+                if (this.positionX > 425 && this.positionX < 459) {
+                    if (this.currentLevel < 3) {
+                        this.currentLevel++;
+                        this.positionY += 192;
+                        this.positionYInt = (int)this.positionY;
+                    }
                     this.enableBottom = false;
                 }
             }
 
             if (this.enableTop) {
                 //left ladder
-                if (this.positionX > 491 && this.positionX < 533) {
+                if (this.positionX > 501 && this.positionX < 535) {
+                    if (this.currentLevel > 0) this.currentLevel--;
+                    this.positionY -= 192;
+                    this.positionYInt = (int)this.positionY;
+                    this.enableTop = false;
+                }
+
+                //right ladder
+                if (this.positionX > 1324 && this.positionX < 1416) {
                     if (this.currentLevel > 0) this.currentLevel--;
                     this.positionY -= 192;
                     this.positionYInt = (int)this.positionY;
@@ -128,6 +150,7 @@ public class PopeyeSprite extends SpriteImpl {
                     this.positionYInt = (int)this.positionY;
                 } else if (this.positionX > 411 && this.positionX < 457) {
                     this.currentLevel = 2;
+              
                     this.positionY = 696;
                     this.positionYInt = (int)this.positionY;
                 }
