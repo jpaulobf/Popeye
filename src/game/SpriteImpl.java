@@ -39,6 +39,7 @@ public abstract class SpriteImpl implements Sprite, Directions {
     public void setScenarioOffsetX(int offsetX) {   this.scenarioOffsetX = offsetX; }
     public void setScenarioOffsetY(int offsetY) {   this.scenarioOffsetY = offsetY; }
     public int getType()                        {   return (this.type);             }
+    public abstract byte getCurrentLevel();
 
     public void addPositionX()                  {   this.addPositionX(2);           }
     public void decPositionX()                  {   this.addPositionX(-2);          }
