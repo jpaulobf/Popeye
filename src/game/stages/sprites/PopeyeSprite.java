@@ -33,6 +33,7 @@ public class PopeyeSprite extends SpriteImpl {
     public void disableBottomFlag()  {if (this.enableBottom) this.enableBottom = false;}
     public void enableTopFlag()   {if (!this.enableTop) this.enableTop = true;}
     public void disableTopFlag()  {if (this.enableTop) this.enableTop = false;}
+    public byte getCurrentLevel() {return this.currentLevel;}
 
     /**
      * Constructor
@@ -106,11 +107,17 @@ public class PopeyeSprite extends SpriteImpl {
             //if want to go down
             if (this.enableBottom) {
                 //central ladder
-                if (currentLevel == 1 && this.positionX > 892 && this.positionX < 954) {
+                if (this.currentLevel == 1 && this.positionX > 892 && this.positionX < 954) {
                     this.currentLevel++;
                     this.positionY += 192;
                     this.positionYInt = (int)this.positionY;
                     this.enableBottom = false;
+                }
+
+                if (this.currentLevel == 2  && this.positionX > 817 && this.positionX < 893) {
+                    this.currentLevel++;
+                    this.positionY += 192;
+                    this.positionYInt = (int)this.positionY;
                 }
 
                 //left ladder
@@ -127,18 +134,28 @@ public class PopeyeSprite extends SpriteImpl {
             if (this.enableTop) {
                 //left ladder
                 if (this.positionX > 501 && this.positionX < 535) {
-                    if (this.currentLevel > 0) this.currentLevel--;
-                    this.positionY -= 192;
-                    this.positionYInt = (int)this.positionY;
-                    this.enableTop = false;
+                    if (this.currentLevel > 0) {
+                        this.currentLevel--;
+                        this.positionY -= 192;
+                        this.positionYInt = (int)this.positionY;
+                        this.enableTop = false;
+                    }
                 }
 
                 //right ladder
                 if (this.positionX > 1324 && this.positionX < 1416) {
-                    if (this.currentLevel > 0) this.currentLevel--;
+                    if (this.currentLevel > 0) {
+                        this.currentLevel--;
+                        this.positionY -= 192;
+                        this.positionYInt = (int)this.positionY;
+                        this.enableTop = false;
+                    }
+                }
+
+                if (this.currentLevel == 3 && this.positionX > 725 && this.positionX < 761) {
+                    this.currentLevel--;
                     this.positionY -= 192;
                     this.positionYInt = (int)this.positionY;
-                    this.enableTop = false;
                 }
             }
 
