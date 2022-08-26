@@ -88,23 +88,6 @@ public class PopeyeSprite extends SpriteImpl {
                 this.positionYInt = (int)this.positionY;
             }
 
-            /*
-            //left ladder
-            if (this.enableBottom && this.positionX > 425 && this.positionX < 459) {
-                currentLevel++;
-                this.positionY += 192;
-                this.positionYInt = (int)this.positionY;
-                this.enableBottom = false;
-            }
-
-            //right ladder
-            if (this.enableBottom && this.positionX > 1419 && this.positionX < 1450) {
-                this.currentLevel++;
-                this.positionY += 192;
-                this.positionYInt = (int)this.positionY;
-                this.enableBottom = false;
-            } */
-            
         } else {
             //lock the sides
             if (this.positionX < 367) {
@@ -124,7 +107,15 @@ public class PopeyeSprite extends SpriteImpl {
                 this.enableBottom = false;
             }
 
+            //botton left ladder
             if (this.currentLevel == 2  && this.positionX > 817 && this.positionX < 893) {
+                this.currentLevel++;
+                this.positionY += 192;
+                this.positionYInt = (int)this.positionY;
+            }
+
+            //botton right ladder
+            if (this.currentLevel == 2  && this.positionX > 995 && this.positionX < 1035) {
                 this.currentLevel++;
                 this.positionY += 192;
                 this.positionYInt = (int)this.positionY;
@@ -172,7 +163,15 @@ public class PopeyeSprite extends SpriteImpl {
                 }
             }
 
+            //botton left ladder
             if (this.currentLevel == 3 && this.positionX > 725 && this.positionX < 761) {
+                this.currentLevel--;
+                this.positionY -= 192;
+                this.positionYInt = (int)this.positionY;
+            }
+
+            //botton right ladder
+            if (this.currentLevel == 3  && this.positionX > 1075 && this.positionX < 1113) {
                 this.currentLevel--;
                 this.positionY -= 192;
                 this.positionYInt = (int)this.positionY;
