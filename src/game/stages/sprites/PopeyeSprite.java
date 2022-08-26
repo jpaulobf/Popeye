@@ -88,6 +88,7 @@ public class PopeyeSprite extends SpriteImpl {
                 this.positionYInt = (int)this.positionY;
             }
 
+            /*
             //left ladder
             if (this.enableBottom && this.positionX > 425 && this.positionX < 459) {
                 currentLevel++;
@@ -102,7 +103,7 @@ public class PopeyeSprite extends SpriteImpl {
                 this.positionY += 192;
                 this.positionYInt = (int)this.positionY;
                 this.enableBottom = false;
-            }
+            } */
             
         } else {
             //lock the sides
@@ -111,93 +112,71 @@ public class PopeyeSprite extends SpriteImpl {
             } else if (this.positionX > 1492) {
                 this.positionX = 1492;
             }
-
-            //if want to go down
-            if (this.enableBottom) {
-                //central ladder
-                if (this.currentLevel == 1 && this.positionX > 892 && this.positionX < 954) {
-                    this.currentLevel++;
-                    this.positionY += 192;
-                    this.positionYInt = (int)this.positionY;
-                    this.enableBottom = false;
-                }
-
-                if (this.currentLevel == 2  && this.positionX > 817 && this.positionX < 893) {
-                    this.currentLevel++;
-                    this.positionY += 192;
-                    this.positionYInt = (int)this.positionY;
-                }
-
-                //left ladder
-                if (this.positionX > 425 && this.positionX < 459) {
-                    if (this.currentLevel < 3) {
-                        this.currentLevel++;
-                        this.positionY += 192;
-                        this.positionYInt = (int)this.positionY;
-                    }
-                    this.enableBottom = false;
-                }
-
-                //right ladder
-                if (this.positionX > 1419 && this.positionX < 1450) {
-                    if (this.currentLevel < 3) {
-                        this.currentLevel++;
-                        this.positionY += 192;
-                        this.positionYInt = (int)this.positionY;
-                    }
-                    this.enableBottom = false;
-                }
+        }
+        
+        //if want to go down
+        if (this.enableBottom) {
+            //central ladder
+            if (this.currentLevel == 1 && this.positionX > 892 && this.positionX < 954) {
+                this.currentLevel++;
+                this.positionY += 192;
+                this.positionYInt = (int)this.positionY;
+                this.enableBottom = false;
             }
 
-            if (this.enableTop) {
-                //left ladder
-                if (this.positionX > 501 && this.positionX < 535) {
-                    if (this.currentLevel > 0) {
-                        this.currentLevel--;
-                        this.positionY -= 192;
-                        this.positionYInt = (int)this.positionY;
-                        this.enableTop = false;
-                    }
-                }
+            if (this.currentLevel == 2  && this.positionX > 817 && this.positionX < 893) {
+                this.currentLevel++;
+                this.positionY += 192;
+                this.positionYInt = (int)this.positionY;
+            }
 
-                //right ladder
-                if (this.positionX > 1324 && this.positionX < 1356) {
-                    if (this.currentLevel > 0) {
-                        this.currentLevel--;
-                        this.positionY -= 192;
-                        this.positionYInt = (int)this.positionY;
-                        this.enableTop = false;
-                    }
+            //left ladder
+            if (this.positionX > 425 && this.positionX < 459) {
+                if (this.currentLevel < 3) {
+                    this.currentLevel++;
+                    this.positionY += 192;
+                    this.positionYInt = (int)this.positionY;
                 }
+                this.enableBottom = false;
+            }
 
-                if (this.currentLevel == 3 && this.positionX > 725 && this.positionX < 761) {
+            //right ladder
+            if (this.positionX > 1419 && this.positionX < 1450) {
+                if (this.currentLevel < 3) {
+                    this.currentLevel++;
+                    this.positionY += 192;
+                    this.positionYInt = (int)this.positionY;
+                }
+                this.enableBottom = false;
+            }
+        }
+
+        if (this.enableTop) {
+            //left ladder
+            if (this.positionX > 501 && this.positionX < 535) {
+                if (this.currentLevel > 0) {
                     this.currentLevel--;
                     this.positionY -= 192;
                     this.positionYInt = (int)this.positionY;
+                    this.enableTop = false;
                 }
             }
 
-            /*
-            if (currentLevel == 1 && this.enableBottom) {
-                if (this.positionX > 910 && this.positionX < 934) {
-                    this.currentLevel = 2;
-                    this.positionY = 696;
+            //right ladder
+            if (this.positionX > 1324 && this.positionX < 1356) {
+                if (this.currentLevel > 0) {
+                    this.currentLevel--;
+                    this.positionY -= 192;
                     this.positionYInt = (int)this.positionY;
-                } else if (this.positionX > 411 && this.positionX < 457) {
-                    this.currentLevel = 2;
-              
-                    this.positionY = 696;
-                    this.positionYInt = (int)this.positionY;
+                    this.enableTop = false;
                 }
             }
 
-            if (currentLevel == 2 && this.enableBottom) {
-                if (this.positionX > 411 && this.positionX < 457) {
-                    this.currentLevel = 3;
-                    this.positionY = 888;
-                    this.positionYInt = (int)this.positionY;
-                }
-            }*/
+            if (this.currentLevel == 3 && this.positionX > 725 && this.positionX < 761) {
+                this.currentLevel--;
+                this.positionY -= 192;
+                this.positionYInt = (int)this.positionY;
+            }
         }
     }
 }
