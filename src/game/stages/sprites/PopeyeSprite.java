@@ -95,6 +95,14 @@ public class PopeyeSprite extends SpriteImpl {
                 this.positionYInt = (int)this.positionY;
                 this.enableBottom = false;
             }
+
+            //right ladder
+            if (this.enableBottom && this.positionX > 1419 && this.positionX < 1450) {
+                this.currentLevel++;
+                this.positionY += 192;
+                this.positionYInt = (int)this.positionY;
+                this.enableBottom = false;
+            }
             
         } else {
             //lock the sides
@@ -129,6 +137,16 @@ public class PopeyeSprite extends SpriteImpl {
                     }
                     this.enableBottom = false;
                 }
+
+                //right ladder
+                if (this.positionX > 1419 && this.positionX < 1450) {
+                    if (this.currentLevel < 3) {
+                        this.currentLevel++;
+                        this.positionY += 192;
+                        this.positionYInt = (int)this.positionY;
+                    }
+                    this.enableBottom = false;
+                }
             }
 
             if (this.enableTop) {
@@ -143,7 +161,7 @@ public class PopeyeSprite extends SpriteImpl {
                 }
 
                 //right ladder
-                if (this.positionX > 1324 && this.positionX < 1416) {
+                if (this.positionX > 1324 && this.positionX < 1356) {
                     if (this.currentLevel > 0) {
                         this.currentLevel--;
                         this.positionY -= 192;
