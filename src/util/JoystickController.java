@@ -1,18 +1,20 @@
 package util;
 
 import interfaces.ControllerListener;
+/*
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
 import net.java.games.input.Component.Identifier;
+ */
 
 /**
  * Responsible for JInput
  */
 public class JoystickController {
 
-    private Controller controller           = null;
+    //private Controller controller           = null;
     protected boolean U                     = false;
     protected boolean D                     = false;
     protected boolean L                     = false;
@@ -20,12 +22,12 @@ public class JoystickController {
     protected boolean HOLD                  = false;
     protected boolean DROP                  = false;
     protected boolean ROTATE                = false;
-    private ControllerListener listener     = null;
-    private volatile long framecounter      = 0;
+    //private ControllerListener listener     = null;
+    //private volatile long framecounter      = 0;
     private volatile boolean actionTrigger  = false;
     private volatile long actionCounter     = 0;
     private final long TRIGGER_MAXTIME      = 40_000_000L;
-    private volatile boolean canAction      = true;
+    //private volatile boolean canAction      = true;
 
     /**
      * Constructor
@@ -54,13 +56,13 @@ public class JoystickController {
      */
     public void update2(long frametime) {
 
-        this.framecounter += frametime;
+        //this.framecounter += frametime;
 
         if (this.actionTrigger) {
             this.actionCounter += frametime;
             
             if (this.actionCounter >= this.TRIGGER_MAXTIME) {
-                this.canAction      = true;
+                //this.canAction      = true;
                 this.actionCounter  = 0;
                 this.actionTrigger  = false;
             } else {
@@ -70,6 +72,7 @@ public class JoystickController {
             }
         }
 
+        /*
         if (this.controller != null && this.framecounter > 50_000_000L) {
             this.framecounter = 0;
 
@@ -82,13 +85,13 @@ public class JoystickController {
                 this.DROP       = false;
                 this.controller = null;
             } else {
-                /* Get the controllers event queue */
+                //Get the controllers event queue
                 EventQueue queue = controller.getEventQueue();
 
-                /* Create an event object for the underlying plugin to populate */
+                //Create an event object for the underlying plugin to populate
                 Event event = new Event();
 
-                /* For each object in the queue */
+                //For each object in the queue
                 while (queue.getNextEvent(event)) {
 
                     Component comp  = event.getComponent();
@@ -175,6 +178,6 @@ public class JoystickController {
                 }
             }
             this.listener.notify(this.U, this.D, this.L, this.R, this.HOLD, this.DROP, this.ROTATE);
-        }
+        }*/
     }
 }
