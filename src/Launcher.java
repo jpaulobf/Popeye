@@ -7,6 +7,9 @@ public class Launcher {
 
     public static final boolean setOpenGL = false;
 
+    /**
+     * Game launcher
+     */
     public static void main(String[] args) {
         //enable the openGL
         if (setOpenGL) {
