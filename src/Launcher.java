@@ -20,7 +20,6 @@ public class Launcher {
         System.setProperty("sun.java2d.translaccel", "true");
 		System.setProperty("sun.java2d.ddforcevram", "true");
         
-        
         //start the thread
         //--->>> FPS options (SplashScreen constructor) - 0 (unlimited) - 30/60/90/120/240
         Thread thread = new Thread(new SplashScreen(60), "engine");
