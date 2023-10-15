@@ -92,7 +92,7 @@ public class ExitScreen {
         this.g2d.fillRect((int)mainBox.x + 1, (int)mainBox.y + 1, (int)mainBox.width, (int)mainBox.height);
         
         //draw the main box 
-        this.g2d.setColor(new Color(0,66,147));
+        this.g2d.setColor(new Color(30,40,80));
         this.g2d.fillRect((int)mainBox.x, (int)mainBox.y, (int)mainBox.width, (int)mainBox.height);
 
         //yes button shadow
