@@ -82,51 +82,6 @@ public class ExitScreen {
     }
 
     /**
-     * Draw method
-     * @param frametime
-     */
-    public void draw(long frametime) {
-      
-        //main box shadow
-        this.g2d.setColor(Color.BLACK);
-        this.g2d.fillRect((int)mainBox.x + 1, (int)mainBox.y + 1, (int)mainBox.width, (int)mainBox.height);
-        
-        //draw the main box 
-        this.g2d.setColor(new Color(30, 40, 80));
-        this.g2d.fillRect((int)mainBox.x, (int)mainBox.y, (int)mainBox.width, (int)mainBox.height);
-
-        //yes button shadow
-        this.g2d.setColor(Color.black);
-        this.g2d.fillRect((int)yesBox.x + 1, (int)yesBox.y + 1, (int)yesBox.width, (int)yesBox.height);
-
-        //draw yes button
-        if (this.currentButtonSelected == 0) {
-            this.g2d.setColor(new Color(0, 152, 255));
-        } else {
-            this.g2d.setColor(new Color(126, 126, 126));
-        }
-        this.g2d.fillRect((int)yesBox.x, (int)yesBox.y, (int)yesBox.width, (int)yesBox.height);
-        this.g2d.drawImage(this.labelYes, (int)yesBox.x + 8, (int)yesBox.y + 5, null);
-
-
-        //no button shadow
-        this.g2d.setColor(Color.black);
-        this.g2d.fillRect((int)noBox.x + 1, (int)noBox.y + 1, (int)noBox.width, (int)noBox.height);
-
-        //draw the no buttom
-        if (this.currentButtonSelected == 0) {
-            this.g2d.setColor(new Color(126, 126, 126));
-        } else {
-            this.g2d.setColor(new Color(0, 152, 255));
-        }
-        this.g2d.fillRect((int)noBox.x, (int)noBox.y, (int)noBox.width, (int)noBox.height);
-        this.g2d.drawImage(this.labelNo, (int)noBox.x + 19, (int)noBox.y + 5, null);
-
-        //draw the question image
-        this.g2d.drawImage(this.really, this.reallyXPosition, this.reallyYPosition, null);
-    }
-
-    /**
      * Play the open menu sound (from outside) 
      */
     public void firstUpdate(long frametime) {
@@ -193,6 +148,51 @@ public class ExitScreen {
         this.mainBox.y      = this.positionY;
         this.mainBox.width  = this.mainBoxCurWidth;
         this.mainBox.height = this.mainBoxCurHeight;
+    }
+
+    /**
+     * Draw method
+     * @param frametime
+     */
+    public void draw(long frametime) {
+      
+        //main box shadow
+        this.g2d.setColor(Color.BLACK);
+        this.g2d.fillRect((int)mainBox.x + 1, (int)mainBox.y + 1, (int)mainBox.width, (int)mainBox.height);
+        
+        //draw the main box 
+        this.g2d.setColor(new Color(30, 40, 80));
+        this.g2d.fillRect((int)mainBox.x, (int)mainBox.y, (int)mainBox.width, (int)mainBox.height);
+
+        //yes button shadow
+        this.g2d.setColor(Color.black);
+        this.g2d.fillRect((int)yesBox.x + 1, (int)yesBox.y + 1, (int)yesBox.width, (int)yesBox.height);
+
+        //draw yes button
+        if (this.currentButtonSelected == 0) {
+            this.g2d.setColor(new Color(0, 152, 255));
+        } else {
+            this.g2d.setColor(new Color(126, 126, 126));
+        }
+        this.g2d.fillRect((int)yesBox.x, (int)yesBox.y, (int)yesBox.width, (int)yesBox.height);
+        this.g2d.drawImage(this.labelYes, (int)yesBox.x + 8, (int)yesBox.y + 5, null);
+
+
+        //no button shadow
+        this.g2d.setColor(Color.black);
+        this.g2d.fillRect((int)noBox.x + 1, (int)noBox.y + 1, (int)noBox.width, (int)noBox.height);
+
+        //draw the no buttom
+        if (this.currentButtonSelected == 0) {
+            this.g2d.setColor(new Color(126, 126, 126));
+        } else {
+            this.g2d.setColor(new Color(0, 152, 255));
+        }
+        this.g2d.fillRect((int)noBox.x, (int)noBox.y, (int)noBox.width, (int)noBox.height);
+        this.g2d.drawImage(this.labelNo, (int)noBox.x + 19, (int)noBox.y + 5, null);
+
+        //draw the question image
+        this.g2d.drawImage(this.really, this.reallyXPosition, this.reallyYPosition, null);
     }
 
     /**
