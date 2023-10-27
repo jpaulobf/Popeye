@@ -17,6 +17,8 @@ public class Launcher {
         } else {
             System.setProperty("sun.java2d.d3d", "True");
         }
+        
+        //set advanced java settings
         System.setProperty("sun.java2d.translaccel", "true");
 		System.setProperty("sun.java2d.ddforcevram", "true");
         
