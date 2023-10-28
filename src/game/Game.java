@@ -43,7 +43,8 @@ public class Game implements GameInterface {
     private OptionsScreen options           = null;
     private GameLevel gameLevel             = null;
     private GameStage gameStage             = null;
-    // private Score score                  = null;
+    //no score for now
+    //private Score score                  = null;
     private ScreenTransition screenT        = null;
     private ExitScreen exitScreen           = null;
     private GameOver gameOver               = null;
