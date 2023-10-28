@@ -1,5 +1,8 @@
 package util;
 
+/**
+ * Utility class
+ */
 public class Logger {
 
     public static final int INFO        = 0;
