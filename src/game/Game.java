@@ -135,7 +135,6 @@ public class Game implements GameInterface {
                     this.options.firstUpdate(frametime);
                 
                 } else {
-
                     //update the options screen
                     this.options.update(frametime);
 
