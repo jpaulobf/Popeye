@@ -121,7 +121,10 @@ public class Game implements GameInterface {
                         //go to staging status
                         this.gameState.setCurrentState(StateMachine.STAGING);
                     } else if (this.menuScreen.goExit()) {
+                        
+                        //Exit the game
                         System.exit(0);
+                        
                     }
                 }
             } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
