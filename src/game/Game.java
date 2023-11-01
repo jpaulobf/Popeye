@@ -125,7 +125,6 @@ public class Game implements GameInterface {
                     }
                 }
             } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
-
                 //sum framecounter
                 this.framecounter += frametime;
 
