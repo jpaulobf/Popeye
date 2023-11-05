@@ -126,7 +126,6 @@ public class Game implements GameInterface {
                     }
                 }
             } else if (this.gameState.getCurrentState() == StateMachine.OPTIONS) {
-
                 //sum framecounter
                 this.framecounter += frametime;
 
@@ -151,7 +150,6 @@ public class Game implements GameInterface {
                     }
                 }
             } else if (this.gameState.getCurrentState() == StateMachine.STAGING) {
-                
                 //sum framecounter
                 this.framecounter += frametime;
                 
@@ -159,9 +157,7 @@ public class Game implements GameInterface {
                 if (this.framecounter == frametime) { 
                     //if necessary
                 } else {
-                    //
                     //do whatever is necessary to start the game...
-                    //
                     this.framecounter = 0;
                     this.skipDraw = true;
                     this.gameState.setCurrentState(StateMachine.IN_GAME);
