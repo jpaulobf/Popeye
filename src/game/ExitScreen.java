@@ -30,7 +30,6 @@ public class ExitScreen {
     private short mainBoxCurHeight              = 0;
     private short reallyXPosition               = -1000;
     private short reallyYPosition               = -1000;
-
     private byte currentButtonSelected          = 0; //0 yes | 1 no 
 
     //exit box (and buttons)
