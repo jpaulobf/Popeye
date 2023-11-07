@@ -13,15 +13,21 @@ import java.awt.GraphicsEnvironment;
  */
 public class GameOver {
 
-    private Graphics2D bgd2             = null;
-    private int windowWidth             = 0;
-    private int windowHeight            = 0;
-    private VolatileImage bgBufferImage = null;
-    private BufferedImage gameover      = null;
-    private Audio gameoverMusic         = null;
-    private Game gameRef                = null;
-    private volatile long framecounter  = 0;
+    //pointers
+    private Graphics2D bgd2                 = null;
+    private Game gameRef                    = null;
 
+    //images positions & sizes
+    private int windowWidth                 = 0;
+    private int windowHeight                = 0;
+
+    //counter & animation parameters
+    private volatile long framecounter      = 0;
+
+    //images & sounds
+    private BufferedImage gameover          = null;
+    private Audio gameoverMusic             = null;
+    
     /**
      * Constructor
      * @param g2d
@@ -29,37 +35,19 @@ public class GameOver {
      * @param windowHeight
      */
     public GameOver(Game game, int windowWidth, int windowHeight) {
+        
+        //store the screen resolution
         this.windowHeight   = windowHeight;
         this.windowWidth    = windowWidth;
+        
+        //store the game object & the Graphics2D
         this.gameRef        = game;
-        // this.gameoverMusic  = LoadingStuffs.getInstance().getAudio("gameover-m");
-        this.drawGameOverInBuffer();
-    }
+        this.bgd2           = this.getG2D();
+        this.gameRef        = game;
 
-    /**
-     * This private method construct the BG just once.
-     * Than, when necessary it is ploted in the backbuffer.
-     */
-    private void drawGameOverInBuffer() {
-        if (this.bgd2 == null) {
-            this.gameover = LoadingStuffs.getInstance().getImage("gameover");
-
-            //create a backbuffer image for doublebuffer
-            this.bgBufferImage  = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleVolatileImage(this.windowWidth, this.windowHeight);
-            this.bgd2           = (Graphics2D)bgBufferImage.getGraphics();
-
-            //paint all bg in black
-            this.bgd2.setBackground(Color.BLACK);
-            this.bgd2.clearRect(0, 0, this.windowWidth, this.windowHeight);
-            
-            int imgW = this.gameover.getWidth();
-            int imgH = this.gameover.getHeight();
-            int imgX = ((this.windowWidth - imgW)/2);
-            int imgY = ((this.windowHeight - imgH)/2);
-
-            this.bgd2.drawImage(this.gameover, imgX, imgY, imgW + imgX, imgH + imgY, 
-                                               0, 0, imgW, imgH, null);
-        }
+        //load the gameover image
+        this.gameover       = LoadingStuffs.getInstance().getImage("gameover");
+        //this.gameoverMusic  = LoadingStuffs.getInstance().getAudio("gameover-m");
     }
 
     /**
@@ -69,7 +57,7 @@ public class GameOver {
     public void update(long frametime) {
         this.framecounter += frametime;
         if(this.framecounter == frametime) {
-            // this.gameoverMusic.play();
+            this.gameoverMusic.play();
         }
     }
 
@@ -78,12 +66,8 @@ public class GameOver {
      * @param frametime
      */
     public void draw(long frametime) {
-        //clear the stage
-        this.gameRef.getG2D().setBackground(Color.BLACK);
-        this.gameRef.getG2D().clearRect(0, 0, this.windowWidth, this.windowHeight * 2);
-
         //After construct the bg once, copy it to the graphic device
-        this.gameRef.getG2D().drawImage(this.bgBufferImage, 0, 0, null);
+        this.gameRef.getG2D().drawImage(this.gameover, 0, 0, null);
     }
 
     /**
@@ -92,4 +76,7 @@ public class GameOver {
     public void reset() {
         this.framecounter = 0;
     }
+
+    //getter
+    public Graphics2D getG2D()  { 	return (this.gameRef.getG2D());    }
 }
