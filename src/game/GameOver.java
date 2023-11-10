@@ -1,12 +1,9 @@
 package game;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.VolatileImage;
 import util.LoadingStuffs;
 import util.Audio;
 import java.awt.image.BufferedImage;
-import java.awt.GraphicsEnvironment;
 
 /**
  * Class represents the gameover scene
