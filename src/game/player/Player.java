@@ -5,7 +5,6 @@ import java.awt.geom.AffineTransform;
 import util.Audio;
 import util.LoadingStuffs;
 import java.awt.image.BufferedImage;
-
 import game.Game;
 
 /**
@@ -37,6 +36,7 @@ public class Player extends SpriteImpl
     private volatile boolean rightLadderUpAnimating     = false;
     private volatile boolean inTheLeftLadder            = false;
     private volatile boolean inTheRightLadder           = false;
+    private volatile int lastAxisX                      = -1;
     
     //walking animation
     private final byte walkingStates                    = 6;
@@ -52,16 +52,6 @@ public class Player extends SpriteImpl
     //jump animation
     private long fallCounter                            = 0;
     private long ladderJumpCounter                      = 0;
-    
-    public void enableLeftFlag()    	        {if (!this.enableLeft) this.enableLeft = true;}
-    public void disableLeftFlag()   	        {if (this.enableLeft) this.enableLeft = false;}
-    public void enableRightFlag()   	        {if (!this.enableRight) this.enableRight = true;}
-    public void disableRightFlag()  	        {if (this.enableRight) this.enableRight = false;}
-    public void enableBottomFlag()  	        {if (!this.enableBottom) this.enableBottom = true;}
-    public void disableBottomFlag() 	        {if (this.enableBottom) this.enableBottom = false;}
-    public void enableTopFlag()   		        {if (!this.enableTop) this.enableTop = true;}
-    public void disableTopFlag()  		        {if (this.enableTop) this.enableTop = false;}
-    public byte getCurrentLevel() 		        {return this.currentLevel;}
 
     /**
      * Constructor
@@ -96,10 +86,11 @@ public class Player extends SpriteImpl
     }
 
     @Override
-    public void update(long frametime) {
-
+    public void update(long frametime) 
+    {
         //jumping animation
-        if (this.jumpingAnimating) {
+        if (this.jumpingAnimating) 
+        {
             this.currentWalkState = 5;
             this.fallCounter += frametime;
             //small jump
@@ -127,7 +118,9 @@ public class Player extends SpriteImpl
                 }
             }
             this.currentPlayerSprite = this.sprites[this.currentWalkState + jumpDirection];
-        } else if (this.leftLadderUpAnimating) {
+        } 
+        else if (this.leftLadderUpAnimating) 
+        {
             //start the counter and set the direction
             this.ladderJumpCounter += frametime;
             this.playerDirection    = LEFT_DIRECTION;
@@ -162,9 +155,9 @@ public class Player extends SpriteImpl
                 }
             }
             this.currentPlayerSprite = this.sprites[this.currentWalkState + playerDirection];
-
-        } else if (this.rightLadderUpAnimating) {
-
+        } 
+        else if (this.rightLadderUpAnimating) 
+        {
             //start the counter and set the direction
             this.ladderJumpCounter += frametime;
             this.playerDirection    = RIGHT_DIRECTION;
@@ -199,9 +192,9 @@ public class Player extends SpriteImpl
                 }
             }
             this.currentPlayerSprite = this.sprites[this.currentWalkState + playerDirection];
-
-        } else {          
-
+        } 
+        else 
+        {          
             if (!this.inTheLeftLadder && !this.inTheRightLadder) {
 
                 this.walkingAnimationCounter    += frametime;
@@ -233,9 +226,9 @@ public class Player extends SpriteImpl
                 }
 
                 //walk left / right
-                if (this.enableLeft) {
+                if (this.lastAxisX == LEFT_DIRECTION) {
                     this.decPositionX();
-                } else if (this.enableRight) {
+                } else if (this.lastAxisX == RIGHT_DIRECTION) {
                     this.addPositionX();
                 }
             }
@@ -335,15 +328,15 @@ public class Player extends SpriteImpl
 
     public void move(int keyCode) {
         if (keyCode == 39) { //right
-            this.disableLeftFlag();
             this.enableRightFlag();
             this.playerStoped = false;
+            this.lastAxisX = RIGHT_DIRECTION;
             this.playerDirection = RIGHT_DIRECTION;
         } else if (keyCode == 37) { //left
-            this.disableRightFlag();
             this.enableLeftFlag();
             this.playerStoped = false;
             this.playerDirection = LEFT_DIRECTION;
+            this.lastAxisX = LEFT_DIRECTION;
         } else if (keyCode == 38) { //up
             this.enableTopFlag();
         } else if (keyCode == 40) { //down
@@ -357,10 +350,16 @@ public class Player extends SpriteImpl
     public void release(int keyCode) {
         if (keyCode == 39) { //right
             this.disableRightFlag();
-            //this.currentWalkState = 0;
+            if (this.enableLeft) {
+                this.lastAxisX = LEFT_DIRECTION;
+                this.playerDirection = LEFT_DIRECTION;
+            }
         } else if (keyCode == 37) { //left
             this.disableLeftFlag();
-            //this.currentWalkState = 0;
+            if (this.enableRight) {
+                this.lastAxisX = RIGHT_DIRECTION;
+                this.playerDirection = RIGHT_DIRECTION;
+            }
         } else if (keyCode == 38) { //up
             this.disableTopFlag();
         } else if (keyCode == 40) { //down
@@ -369,9 +368,20 @@ public class Player extends SpriteImpl
 
         if (!this.enableLeft && !this.enableRight) {
             this.playerStoped = true;
+            this.lastAxisX = -1;
         }
     }
 
     public void firstUpdate(long frametime) {
     }
+
+    public void enableLeftFlag()    	        {if (!this.enableLeft) this.enableLeft = true;}
+    public void disableLeftFlag()   	        {if (this.enableLeft) this.enableLeft = false;}
+    public void enableRightFlag()   	        {if (!this.enableRight) this.enableRight = true;}
+    public void disableRightFlag()  	        {if (this.enableRight) this.enableRight = false;}
+    public void enableBottomFlag()  	        {if (!this.enableBottom) this.enableBottom = true;}
+    public void disableBottomFlag() 	        {if (this.enableBottom) this.enableBottom = false;}
+    public void enableTopFlag()   		        {if (!this.enableTop) this.enableTop = true;}
+    public void disableTopFlag()  		        {if (this.enableTop) this.enableTop = false;}
+    public byte getCurrentLevel() 		        {return this.currentLevel;}
 }
