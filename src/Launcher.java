@@ -1,4 +1,4 @@
-import game.SplashScreen;
+import game.splash.SplashScreen;
 
 /**
  * Laucher class
