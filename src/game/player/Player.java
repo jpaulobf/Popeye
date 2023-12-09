@@ -78,6 +78,9 @@ public class Player extends SpriteImpl
         this.affineTransform.scale(1, 1); 
     }
 
+    /**
+     * Draw Method
+     */
     @Override
     public void draw(long frametime) {
         this.affineTransform.translate(this.positionX, this.positionY);
@@ -85,6 +88,9 @@ public class Player extends SpriteImpl
         this.affineTransform.translate(-this.positionX, -this.positionY);
     }
 
+    /**
+     * Sprite Update Method
+     */
     @Override
     public void update(long frametime) 
     {
@@ -119,24 +125,24 @@ public class Player extends SpriteImpl
             }
             this.currentPlayerSprite = this.sprites[this.currentWalkState + jumpDirection];
         } 
-        else if (this.leftLadderUpAnimating) 
+        else if (this.leftLadderUpAnimating || this.rightLadderUpAnimating) 
         {
             //start the counter and set the direction
             this.ladderJumpCounter += frametime;
-            this.playerDirection    = LEFT_DIRECTION;
+            this.playerDirection    = (this.leftLadderUpAnimating)?LEFT_DIRECTION:RIGHT_DIRECTION;
 
             //set the sprite start position
             if (this.ladderStep == 0) {
-                this.positionX = 510;
+                this.positionX = (this.leftLadderUpAnimating)?510:1345;
             }
 
             //small jump
             if (this.ladderJumpCounter < 200_000_000) {
-                this.positionX -= 2;
+                this.positionX += (this.leftLadderUpAnimating)?-2:2;
                 this.positionY -= 4;
             } else {
                 this.positionY += 4;
-                if (this.positionY >= 494 - (38 + (38 * ladderStep))) {
+                if (this.positionY >= 496 + (192 * (this.currentLevel - 1)) - (38 + (38 * ladderStep))) {
                     this.ladderStep += 1;
                     this.ladderJumpCounter = 0;
                     if (this.ladderStep % 2 == 0) {
@@ -145,50 +151,23 @@ public class Player extends SpriteImpl
                         this.currentWalkState = 3;
                     }
                     
-                    this.inTheLeftLadder = (this.ladderStep != 0) && (this.ladderStep < 5);
-                    if (ladderStep == 5) {
-                        this.currentLevel--;
-                        this.ladderStep = 0;
-                        this.currentWalkState = 0;
-                    }
-                    this.leftLadderUpAnimating = false;
-                }
-            }
-            this.currentPlayerSprite = this.sprites[this.currentWalkState + playerDirection];
-        } 
-        else if (this.rightLadderUpAnimating) 
-        {
-            //start the counter and set the direction
-            this.ladderJumpCounter += frametime;
-            this.playerDirection    = RIGHT_DIRECTION;
-
-            //set the sprite start position
-            if (this.ladderStep == 0) {
-                this.positionX = 1345;
-            }
-
-            //small jump
-            if (this.ladderJumpCounter < 200_000_000) {
-                this.positionX += 2;
-                this.positionY -= 4;
-            } else {
-                this.positionY += 4;
-                if (this.positionY >= 494 - (38 + (38 * ladderStep))) {
-                    this.ladderStep += 1;
-                    this.ladderJumpCounter = 0;
-                    if (this.ladderStep % 2 == 0) {
-                        this.currentWalkState = 1;
+                    if (this.leftLadderUpAnimating) {
+                        this.inTheLeftLadder = (this.ladderStep != 0) && (this.ladderStep < 5);
                     } else {
-                        this.currentWalkState = 3;
+                        this.inTheRightLadder = (this.ladderStep != 0) && (this.ladderStep < 5);
                     }
-                    
-                    this.inTheRightLadder = (this.ladderStep != 0) && (this.ladderStep < 5);
+
                     if (ladderStep == 5) {
                         this.currentLevel--;
                         this.ladderStep = 0;
                         this.currentWalkState = 0;
                     }
-                    this.rightLadderUpAnimating = false;
+
+                    if (this.leftLadderUpAnimating) {
+                        this.leftLadderUpAnimating = false;
+                    } else {
+                        this.rightLadderUpAnimating = false;
+                    }
                 }
             }
             this.currentPlayerSprite = this.sprites[this.currentWalkState + playerDirection];
