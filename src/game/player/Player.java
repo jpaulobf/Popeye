@@ -34,6 +34,11 @@ public class Player extends SpriteImpl
     private volatile boolean jumpingAnimating           = false;
     private volatile boolean leftLadderUpAnimating      = false;
     private volatile boolean rightLadderUpAnimating     = false;
+
+    private volatile boolean leftLadderDownAnimating    = false;
+    private volatile boolean rightLadderDownAnimating   = false;
+
+
     private volatile boolean inTheLeftLadder            = false;
     private volatile boolean inTheRightLadder           = false;
     private volatile int lastAxisX                      = -1;
@@ -43,11 +48,11 @@ public class Player extends SpriteImpl
     private byte currentWalkState                       = 0;
     private long walkingAnimationCounter                = 0;
     private long walkingSoundCounter                    = 0;
-    private volatile boolean playerStoped               = true;
     private int playerDirection                         = RIGHT_DIRECTION;
     private int jumpDirection                           = RIGHT_DIRECTION;
-    private boolean playFoot                            = false;
-    private boolean currentFootLeft                     = true;
+    private volatile boolean playerStoped               = true;
+    private volatile boolean playFoot                   = false;
+    private volatile boolean currentFootLeft            = true;
 
     //jump animation
     private long fallCounter                            = 0;
@@ -99,10 +104,9 @@ public class Player extends SpriteImpl
         {
             this.currentWalkState = 5;
             this.fallCounter += frametime;
+
             //small jump
-            if (this.fallCounter == frametime) {
-                //this.jumpDirection = this.playerDirection;
-            } else if (this.fallCounter < 200_000_000) {
+            if (this.fallCounter < 200_000_000) {
                 if (this.jumpDirection == RIGHT_DIRECTION) {
                     this.positionX += 1;
                 } else {
@@ -143,6 +147,7 @@ public class Player extends SpriteImpl
             } else {
                 this.positionY += 4;
                 if (this.positionY >= 496 + (192 * (this.currentLevel - 1)) - (38 + (38 * ladderStep))) {
+                    this.positionY = (496 + (192 * (this.currentLevel - 1)) - (38 + (38 * ladderStep)));
                     this.ladderStep += 1;
                     this.ladderJumpCounter = 0;
                     if (this.ladderStep % 2 == 0) {
@@ -171,6 +176,59 @@ public class Player extends SpriteImpl
                 }
             }
             this.currentPlayerSprite = this.sprites[this.currentWalkState + playerDirection];
+        } 
+        else if (this.leftLadderDownAnimating || this.rightLadderDownAnimating) 
+        { 
+
+            //start the counter and set the direction
+            this.ladderJumpCounter += frametime;
+            this.playerDirection    = (this.leftLadderDownAnimating)?RIGHT_DIRECTION:LEFT_DIRECTION;
+
+            //set the sprite start position
+            if (this.ladderStep == 0) {
+                this.positionX = (this.leftLadderDownAnimating)?420:1420;
+            }
+
+            //small jump
+            if (this.ladderJumpCounter < 200_000_000) {
+                this.positionX += (this.leftLadderDownAnimating)?2:-2;
+                this.positionY += 4;
+            } else {
+                this.positionY -= 4;
+                if (this.positionY >= 380 - (39 - (39 * ladderStep)) - (192 * (this.currentLevel))) {
+                    this.positionY = 380 - (39 - (39 * ladderStep)) + (192 * (this.currentLevel));
+                    this.ladderStep += 1;
+                    this.ladderJumpCounter = 0;
+
+                    if (this.ladderStep % 2 == 0) {
+                        this.currentWalkState = 1;
+                    } else {
+                        this.currentWalkState = 3;
+                    }
+                    
+                    if (this.leftLadderDownAnimating) {
+                        this.inTheLeftLadder = (this.ladderStep != 0) && (this.ladderStep < 5);
+                    } else {
+                        this.inTheRightLadder = (this.ladderStep != 0) && (this.ladderStep < 5);
+                    }
+
+                    if (ladderStep == 5) {
+                        this.currentLevel++;
+                        this.ladderStep = 0;
+                        this.currentWalkState = 0;
+                    }
+
+                    if (this.leftLadderDownAnimating) {
+                        this.leftLadderDownAnimating = false;
+                    } else {
+                        this.rightLadderDownAnimating = false;
+                    }
+                }
+            }
+            this.currentPlayerSprite = this.sprites[this.currentWalkState + playerDirection];
+
+
+
         } 
         else 
         {          
@@ -207,8 +265,10 @@ public class Player extends SpriteImpl
                 //walk left / right
                 if (this.lastAxisX == LEFT_DIRECTION) {
                     this.decPositionX();
+                    this.playerDirection = LEFT_DIRECTION;
                 } else if (this.lastAxisX == RIGHT_DIRECTION) {
                     this.addPositionX();
+                    this.playerDirection = RIGHT_DIRECTION;
                 }
             }
 
@@ -257,21 +317,17 @@ public class Player extends SpriteImpl
                 }
 
                 //left ladder
-                if (this.positionX > 425 && this.positionX < 459) {
+                if (this.positionX > 400 && this.positionX < 465 || this.inTheLeftLadder) {
                     if (this.currentLevel < 3) {
-                        this.currentLevel++;
-                        this.positionY += 192;
+                        this.leftLadderDownAnimating = true;
                     }
-                    this.enableBottom = false;
                 }
 
                 //right ladder
-                if (this.positionX > 1419 && this.positionX < 1450) {
+                if (this.positionX > 1400 && this.positionX < 1465 || this.inTheRightLadder) {
                     if (this.currentLevel < 3) {
-                        this.currentLevel++;
-                        this.positionY += 192;
+                        this.rightLadderDownAnimating = true;
                     }
-                    this.enableBottom = false;
                 }
             }
 
