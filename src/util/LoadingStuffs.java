@@ -19,8 +19,8 @@ import java.awt.Graphics2D;
 public class LoadingStuffs {
     
     //private instance of loader
-    private static LoadingStuffs instance   = null;
-    private int chargeStatus                = 0;
+    private static LoadingStuffs instance       = null;
+    private int chargeStatus                    = 0;
 
     //Stuffs Map
     private Map<String, BufferedImage> images   = new HashMap<String, BufferedImage>();
@@ -62,6 +62,43 @@ public class LoadingStuffs {
             //------------------------------------------//
             image = ImageIO.read(new File("images\\popeye.png"));
             images.put("popeye-sprite", image);
+
+            image = ImageIO.read(new File("images\\p1.png"));
+            images.put("popeye-sprite-0", image);
+
+            image = ImageIO.read(new File("images\\p2.png"));
+            images.put("popeye-sprite-1", image);
+
+            image = ImageIO.read(new File("images\\p3.png"));
+            images.put("popeye-sprite-2", image);
+
+            image = ImageIO.read(new File("images\\p4.png"));
+            images.put("popeye-sprite-3", image);
+
+            image = ImageIO.read(new File("images\\p5.png"));
+            images.put("popeye-sprite-4", image);
+
+            image = ImageIO.read(new File("images\\p6.png"));
+            images.put("popeye-sprite-5", image);
+
+            image = ImageIO.read(new File("images\\p1i.png"));
+            images.put("i-popeye-sprite-0", image);
+
+            image = ImageIO.read(new File("images\\p2i.png"));
+            images.put("i-popeye-sprite-1", image);
+
+            image = ImageIO.read(new File("images\\p3i.png"));
+            images.put("i-popeye-sprite-2", image);
+
+            image = ImageIO.read(new File("images\\p4i.png"));
+            images.put("i-popeye-sprite-3", image);
+
+            image = ImageIO.read(new File("images\\p5i.png"));
+            images.put("i-popeye-sprite-4", image);
+
+            image = ImageIO.read(new File("images\\p6i.png"));
+            images.put("i-popeye-sprite-5", image);
+
 
             //------------------------------------------//
             //----------------- Menu -------------------//
@@ -167,7 +204,6 @@ public class LoadingStuffs {
 
 
             //--------------------------------------------------------------------------------------------------//
-
             Audio audio = new Audio("audio\\opening.wav", 0, Audio.SFX);
             if (audio != null && audio.isReady()) {
                 audios.put("opening", audio);
@@ -202,6 +238,15 @@ public class LoadingStuffs {
                 audios.put("intro", audio);
             }
 
+            audio = new Audio("audio\\s1.wav", 0, Audio.SFX);
+            if (audio != null && audio.isReady()) {
+                audios.put("right-foot", audio);
+            }
+
+            audio = new Audio("audio\\s2.wav", 0, Audio.SFX);
+            if (audio != null && audio.isReady()) {
+                audios.put("left-foot", audio);
+            }
             Logger.INFO("read all audio...", this);
         } catch (java.lang.Exception e) {
             e.printStackTrace();
