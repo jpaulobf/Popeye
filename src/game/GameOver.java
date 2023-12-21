@@ -12,7 +12,7 @@ public class GameOver {
 
     //pointers
     private Graphics2D bgd2                 = null;
-    private Game gameRef                    = null;
+    private GameController gameRef                    = null;
 
     //images positions & sizes
     private int windowWidth                 = 0;
@@ -31,7 +31,7 @@ public class GameOver {
      * @param windowWidth
      * @param windowHeight
      */
-    public GameOver(Game game, int windowWidth, int windowHeight) {
+    public GameOver(GameController game, int windowWidth, int windowHeight) {
         
         //store the screen resolution
         this.windowHeight   = windowHeight;
