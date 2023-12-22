@@ -113,4 +113,6 @@ public interface GameInterface {
      * Set the game to gameover
      */
     public void gameOver();
+
+    public void changeGameStateToIngame();
 }
