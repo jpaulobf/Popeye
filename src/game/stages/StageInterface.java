@@ -5,9 +5,12 @@ import java.awt.Graphics2D;
 public interface StageInterface {
 
     public Graphics2D getG2D();
+  
+    public void update(long frametime);
 
-    public void move(int keyCode);
+    public void draw(long frametime);
 
-    public void releaseKey(int keyCode);
-    
+    public void reset();
+
+    public void firstUpdate(long frametime);
 }
