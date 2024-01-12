@@ -1,10 +1,12 @@
 package game;
 
 import java.util.List;
+
 import interfaces.GameInterface;
 import java.util.ArrayList;
 import util.Audio;
 import util.LoadingStuffs;
+
 
 /**
  * Game Music & SFX Class
@@ -15,7 +17,7 @@ public class GameMusicSFX {
     private List<Audio> audioList   = new ArrayList<Audio>();
     private volatile Audio theme    = null;
     private volatile boolean mute   = false;
-    private Game gameRef            = null;
+    private GameController gameRef            = null;
 
     /**
      * Constructor
@@ -23,7 +25,7 @@ public class GameMusicSFX {
      */
     public GameMusicSFX(GameInterface game) {
 
-        this.gameRef = (Game)game;
+        this.gameRef = (GameController)game;
 
         if (this.gameRef.getGameLevel().getCurrentLevel() == GameLevel.FIRST_LEVEL) {
             this.theme = LoadingStuffs.getInstance().getAudio("theme1");
