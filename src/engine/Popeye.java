@@ -3,7 +3,6 @@ package engine;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Graphics2D;
@@ -155,6 +154,7 @@ public class Popeye implements Runnable {
                 public synchronized void keyPressed(KeyEvent e) {
                     game.keyPressed(e.getKeyCode());
                 }
+                
                 @Override
                 public synchronized void keyReleased(KeyEvent e) {
                     if (e.getKeyCode() == 113) {
