@@ -1,8 +1,6 @@
 package game.stages;
 
-import game.GameStage;
-import game.SpriteImpl;
-import game.stages.sprites.PopeyeSprite;
+import game.Game;
 import java.awt.image.VolatileImage;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
@@ -17,7 +15,7 @@ public class Stage1 implements StageInterface {
     //---------------------------------------------------------//
     //---                   Properties                      ---//
     //---------------------------------------------------------//
-    private GameStage gameStageRef          = null;
+    private Game gameStageRef      = null;
     private VolatileImage bgBufferImage     = null;
     private BufferedImage bgSpinashImage    = null;
     private Graphics2D g2dBg                = null;
@@ -28,17 +26,15 @@ public class Stage1 implements StageInterface {
     private short spinashX                  = 366;
     private short spinashY                  = 543;
     private long framecounter               = 0;
-    private SpriteImpl popeyeSprite         = null;
 
     /**
      * Constructor
      * @param gameStage
      */
-    public Stage1(GameStage gameStage, int windowWidth, int windowHeight) {
+    public Stage1(Game gameStage, int windowWidth, int windowHeight) {
         this.gameStageRef   = gameStage;
         this.windowHeight   = windowHeight;
         this.windowWidth    = windowWidth;
-        this.popeyeSprite   = new PopeyeSprite(this, 579, 312);
 
         //create a backbuffer image for doublebuffer
         this.bgSpinashImage = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(38, 39);
@@ -64,8 +60,6 @@ public class Stage1 implements StageInterface {
                 this.spinashY = 735;
             }
         }
-
-        this.popeyeSprite.update(frametime);
     }
 
     public void draw(long frametime) {
@@ -78,9 +72,6 @@ public class Stage1 implements StageInterface {
 
         //draw the spinash
         this.gameStageRef.getG2D().drawImage(this.bgSpinashImage, this.spinashX, this.spinashY, null);
-
-        //draw popeye sprite
-        this.popeyeSprite.draw(frametime);
     }
 
     /**
@@ -182,39 +173,15 @@ public class Stage1 implements StageInterface {
         return (this.gameStageRef.getG2D());
     }
 
-    @Override
-    public void move(int keyCode) {
-        if (keyCode == 39) { //right
-			this.popeyeSprite.enableRightFlag();
-        } else if (keyCode == 37) { //left
-            this.popeyeSprite.enableLeftFlag();
-        } else if (keyCode == 38) { //up
-            this.popeyeSprite.enableTopFlag();
-        } else if (keyCode == 40) { //down
-            this.popeyeSprite.enableBottomFlag();
-        } else if (keyCode == 32) { //space
-            System.out.println(this.popeyeSprite.getPositionX());
-            System.out.println(this.popeyeSprite.getCurrentLevel());
-            
-        }
-    }
-
-    public void releaseKey(int keyCode) {
-        if (keyCode == 39) { //right
-			this.popeyeSprite.disableRightFlag();
-        } else if (keyCode == 37) { //left
-            this.popeyeSprite.disableLeftFlag();
-        } else if (keyCode == 38) { //up
-            this.popeyeSprite.disableTopFlag();
-        } else if (keyCode == 40) { //down
-            this.popeyeSprite.disableBottomFlag();
-        }
-    }
-
     /**
      * Reset stage
      */
     public void reset() {
 
+    }
+
+    @Override
+    public void firstUpdate(long frametime) {
+        
     }
 }
