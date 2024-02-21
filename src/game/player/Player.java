@@ -424,7 +424,7 @@ public class Player extends SpriteImpl
     }
 
     public void firstUpdate(long frametime) {
-        //TODO:
+        //Do nothing for now
     }
 
     public void enableLeftFlag()    	        {if (!this.enableLeft) this.enableLeft = true;}
