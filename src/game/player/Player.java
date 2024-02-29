@@ -363,6 +363,7 @@ public class Player extends SpriteImpl
 
             /*
             //Still with problems in the stairs
+            
             //if (this.leftLadderDownAnimating || this.rightLadderDownAnimating || this.leftLadderUpAnimating || this.rightLadderUpAnimating) {
                 System.out.println("this.positionY: " + this.positionY);
                 if (this.positionY >= 304 && this.positionY < 494) {
