@@ -48,7 +48,6 @@ public abstract class SpriteImpl implements Sprite, Directions {
     public void decPositionY()                  {   this.addPositionY(-1 * velocity);   }
     public void addPositionY(double add)        {   this.positionY+=add;                }
 
-
     public abstract void enableLeftFlag();
     public abstract void disableLeftFlag();
     public abstract void enableRightFlag();
