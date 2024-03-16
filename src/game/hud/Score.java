@@ -59,7 +59,6 @@ public class Score {
 
     /**
      * Score constructor
-     * Start Score class.
      * @param game
      * @param wwm
      * @param whm
