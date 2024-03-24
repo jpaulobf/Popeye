@@ -20,7 +20,7 @@ import java.awt.Point;
  */
 public class Score {
     
-    private GameController gameRef                = null;
+    private GameController gameRef      = null;
     private BufferedImage scoreBG       = null;
     private BufferedImage hiscoreBG     = null;
     private BufferedImage levelBG       = null;
