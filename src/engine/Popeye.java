@@ -183,8 +183,7 @@ public class Popeye implements Runnable {
         
         /**
          * Draw the game / receives the frametime
-         * WTMD: This method draw the current screen, some steps described here:
-                   1) Clear the stage
+         * WTMD: This method draw the current screen, some steps described here: 1) Clear the stage
         * @param frametime
         */
         public synchronized void draw(long frametime) {
