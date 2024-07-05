@@ -107,6 +107,9 @@ public class ScreenTransition {
         }
     }
 
+    /**
+     * Toogle pause for the animation
+     */
     public void tooglePause() {
         this.stopped = !this.stopped;
     }
