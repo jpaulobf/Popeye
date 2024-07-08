@@ -34,7 +34,6 @@ public class ScreenTransition {
     public ScreenTransition(GameInterface game) {
         
         this.gameRef        = game;
-
         this.bean           = LoadingStuffs.getInstance().getImage("bean");
 
         this.screenWidth    = (short)this.gameRef.getInternalResolutionWidth();
