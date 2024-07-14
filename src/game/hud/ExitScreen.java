@@ -236,6 +236,10 @@ public class ExitScreen {
         this.reallyYPosition        = -1000;
     }
 
+    /**
+     * Return the action that you are taking in the Exit screen.
+     * @return
+     */
     public int action() {
         return 0;
     }
