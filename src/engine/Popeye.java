@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -312,6 +313,7 @@ public class Popeye implements Runnable {
             //verify if the user want to show the FPS
             if (this.showFPS) {
                 g2d.setColor(Color.YELLOW);
+                g2d.setFont(new Font("Arial", Font.PLAIN, 12));
                 g2d.drawString("fps: " + (int)(1_000_000_000D / frametime), windowWidth - 50, windowHeight - 10);
             }
         }
