@@ -14,4 +14,17 @@ public interface CanvasEngine {
      * @param frametime
      */
     public void draw(long frametime);
+
+    /**
+     * Set the game resolution
+     * @param width
+     * @param height
+     */    
+    public void toogleFullscreen();
+
+    /**
+     * Toggle the fullscreen mode
+     */
+    public void toogleFullScreenProportion();
+
 }
