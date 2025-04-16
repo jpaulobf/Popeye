@@ -15,15 +15,35 @@ import java.awt.event.KeyAdapter;
 import interfaces.GameInterface;
 
 /**
-    Project:    Popeye Game
-    Author:     Joao P. B. Faria
-    Date:       August, 2002
-    WTCD:       This class, encapsulate the Engine & Canvas
-*/
+ * Classe principal da engine do jogo Popeye.
+ * 
+ * Esta classe encapsula a lógica principal do jogo, incluindo a criação da janela,
+ * controle de FPS, renderização e gerenciamento de eventos. Ela utiliza uma estrutura
+ * de threads para manter o jogo responsivo e fluido.
+ * 
+ * Responsabilidades:
+ * - Gerenciar a janela do jogo (Canvas).
+ * - Controlar o loop principal do jogo (GameEngine).
+ * - Alternar entre modos de tela cheia e janela.
+ * 
+ * @author Joao P. B. Faria
+ * @version 1.0
+ * @since August, 2002
+ */
 public class Popeye implements Runnable {
 
     /**
-     * Game Canvas
+     * Classe responsável pela janela do jogo.
+     * 
+     * A classe `Canvas` gerencia a criação e configuração da janela do jogo, incluindo
+     * o modo de tela cheia, o gerenciamento de eventos de teclado e a renderização
+     * utilizando um `BufferStrategy`.
+     * 
+     * Responsabilidades:
+     * - Configurar as propriedades da janela.
+     * - Gerenciar o modo de tela cheia.
+     * - Lidar com eventos de teclado.
+     * - Renderizar os gráficos do jogo.
      */
     private class Canvas extends JFrame implements CanvasEngine {
 
@@ -40,7 +60,7 @@ public class Popeye implements Runnable {
         private int fullScreenHeight                = 0;
         private int fullScreenXPos                  = 0;
         private int fullScreenYPos                  = 0;
-        private int fullscreenState                 = 0;
+        private int fullscreenMode                  = 0;
         private int gameInternalResolutionW         = 0;
         private int gameInternalResolutionH         = 0;
         
@@ -231,7 +251,14 @@ public class Popeye implements Runnable {
         }
 
         /**
-         * Change the window to normal or fullscreen (F3)
+         * Alterna entre os modos de janela e tela cheia.
+         * 
+         * Este método verifica se o modo de tela cheia está disponível e, se estiver,
+         * alterna entre os dois modos. No modo de tela cheia, ele utiliza o dispositivo
+         * gráfico para maximizar a janela. No modo de janela, ele restaura as configurações
+         * originais.
+         * 
+         * O método é chamado ao pressionar a tecla F3.
          */
         public synchronized void toogleFullscreen() {
             if (this.fullscreen) { 
@@ -269,45 +296,80 @@ public class Popeye implements Runnable {
         }
 
         /**
-         * Change screen stretch on the fly (F2)
+         * Alterna entre diferentes proporções de tela no modo de tela cheia.
+         * 
+         * Este método ajusta a largura e altura da tela com base em três modos:
+         * - Modo 0: Tela cheia sem proporção (preenche toda a tela).
+         * - Modo 1: Tela cheia com proporção fixa (mantém a proporção do jogo).
+         * - Modo 2: Tamanho original da janela.
+         * 
+         * O método é chamado ao pressionar a tecla F2.
          */
         public synchronized void toogleFullScreenProportion() {
-            this.fullscreenState = (this.fullscreenState + 1)%3;
+            this.fullscreenMode = (this.fullscreenMode + 1) % 3;
 
-            switch (this.fullscreenState) {
+            switch (this.fullscreenMode) {
                 case 0:
-                    this.fullScreenHeight   = (int)size.getHeight();
-                    this.fullScreenWidth    = (int)this.getWidth();
-                    this.fullScreenXPos     = 0;
-                    this.fullScreenYPos     = 0;
+                    setFullScreenWithoutProportion();
                     break;
                 case 1:
-                    // calc fullscreen width/height
-                    this.fullScreenHeight   = (int)size.getHeight();
-                    this.fullScreenWidth    = (int)((double)this.windowWidth/(double)this.windowHeight*(double)size.getHeight());
-                    if (this.fullScreenWidth > this.size.getWidth()) {
-                        this.fullScreenHeight = (int)((double)this.fullScreenHeight * (double)this.size.getWidth() / (double)this.fullScreenWidth);
-                        this.fullScreenWidth = (int)this.size.getWidth();
-                    }
-                    this.fullScreenXPos     = (int)((size.getWidth() - this.fullScreenWidth) / 2);
-                    this.fullScreenYPos     = (int)((size.getHeight() - this.fullScreenHeight) / 2);
-                    this.fullScreenWidth    += this.fullScreenXPos;
-                    this.fullScreenHeight   += this.fullScreenYPos;
+                    setFullScreenWithFixedProportion();
                     break;
                 case 2:
-                    this.fullScreenHeight   = this.windowHeight;
-                    this.fullScreenWidth    = this.windowWidth;
-                    this.fullScreenXPos     = (int)((size.getWidth() - this.fullScreenWidth) / 2);
-                    this.fullScreenYPos     = (int)((size.getHeight() - this.fullScreenHeight) / 2);
-                    this.fullScreenWidth    += this.fullScreenXPos;
-                    this.fullScreenHeight   += this.fullScreenYPos;
+                    setOriginalWindowSize();
                     break;
             }
         }
 
         /**
-         * Show FPS Layer
-         * @param frametime
+         * Configura a tela cheia sem manter proporção.
+         */
+        private void setFullScreenWithoutProportion() {
+            this.fullScreenHeight = (int) size.getHeight();
+            this.fullScreenWidth = (int) this.getWidth();
+            this.fullScreenXPos = 0;
+            this.fullScreenYPos = 0;
+        }
+
+        /**
+         * Configura a tela cheia mantendo a proporção fixa.
+         */
+        private void setFullScreenWithFixedProportion() {
+            this.fullScreenHeight = (int) size.getHeight();
+            this.fullScreenWidth = (int) ((double) this.windowWidth / this.windowHeight * size.getHeight());
+            if (this.fullScreenWidth > this.size.getWidth()) {
+                this.fullScreenHeight = (int) ((double) this.fullScreenHeight * this.size.getWidth() / this.fullScreenWidth);
+                this.fullScreenWidth = (int) this.size.getWidth();
+            }
+            this.fullScreenXPos = (int) ((size.getWidth() - this.fullScreenWidth) / 2);
+            this.fullScreenYPos = (int) ((size.getHeight() - this.fullScreenHeight) / 2);
+            this.fullScreenWidth += this.fullScreenXPos;
+            this.fullScreenHeight += this.fullScreenYPos;
+        }
+
+        /**
+         * Configura o tamanho original da janela.
+         */
+        private void setOriginalWindowSize() {
+            this.fullScreenHeight = this.windowHeight;
+            this.fullScreenWidth = this.windowWidth;
+            this.fullScreenXPos = (int) ((size.getWidth() - this.fullScreenWidth) / 2);
+            this.fullScreenYPos = (int) ((size.getHeight() - this.fullScreenHeight) / 2);
+            this.fullScreenWidth += this.fullScreenXPos;
+            this.fullScreenHeight += this.fullScreenYPos;
+        }
+
+        /**
+         * Renderiza o contador de FPS na tela.
+         * 
+         * Este método desenha o número de quadros por segundo (FPS) no canto inferior direito
+         * da tela, caso a opção `showFPS` esteja habilitada. Ele utiliza o tempo de frame
+         * para calcular o FPS.
+         * 
+         * @param g2d O contexto gráfico usado para desenhar.
+         * @param frametime O tempo de duração do último frame, em nanossegundos.
+         * @param windowWidth A largura da janela.
+         * @param windowHeight A altura da janela.
          */
         private void renderFPSLayer(Graphics2D g2d, long frametime, int windowWidth, int windowHeight) {
             //verify if the user want to show the FPS
@@ -359,7 +421,16 @@ public class Popeye implements Runnable {
     }
 
     /**
-     * Class of GameEngine
+     * Classe responsável pelo loop principal do jogo.
+     * 
+     * O `GameEngine` gerencia o ciclo de atualização e renderização do jogo, garantindo
+     * que o jogo seja executado em uma taxa de quadros consistente. Ele suporta diferentes
+     * taxas de FPS (30, 60, 90, 120, 240) e também um modo de FPS ilimitado.
+     * 
+     * Responsabilidades:
+     * - Atualizar a lógica do jogo.
+     * - Renderizar os gráficos do jogo.
+     * - Controlar o tempo entre frames para manter a taxa de FPS.
      */
     private class GameEngine implements Runnable {
 
@@ -490,12 +561,26 @@ public class Popeye implements Runnable {
             }
         }
     
-        /* Método de update, só executa quando a flag permite */
+        /**
+         * Atualiza a lógica do jogo.
+         * 
+         * Este método é chamado a cada frame para processar a lógica do jogo, como
+         * movimentação de personagens, detecção de colisões e outros cálculos necessários.
+         * 
+         * @param frametime O tempo de duração do frame atual, em nanossegundos.
+         */
         public void update(long frametime) {
             this.game.update(frametime);
         }
     
-        /* Método de desenho, só executa quando a flag permite */
+        /**
+         * Renderiza os gráficos do jogo.
+         * 
+         * Este método é chamado a cada frame para desenhar os elementos do jogo na tela,
+         * como personagens, cenários e efeitos visuais.
+         * 
+         * @param frametime O tempo de duração do frame atual, em nanossegundos.
+         */
         public void draw(long frametime) {
             this.game.draw(frametime);
         }
