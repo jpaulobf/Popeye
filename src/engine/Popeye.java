@@ -28,7 +28,7 @@ import interfaces.GameInterface;
  * 
  * @author Joao P. B. Faria
  * @version 1.0
- * @since August, 2002
+ * @since August, 2020
  */
 public class Popeye implements Runnable {
 
@@ -54,8 +54,8 @@ public class Popeye implements Runnable {
         private int positionY                       = 0;
 
         //width and height of the window
-        private int windowWidth                     = 1920;
-        private int windowHeight                    = 1080;
+        private int windowWidth                     = 1600;
+        private int windowHeight                    = 900;
         private int fullScreenWidth                 = 0;
         private int fullScreenHeight                = 0;
         private int fullScreenXPos                  = 0;
@@ -82,7 +82,7 @@ public class Popeye implements Runnable {
         private boolean showFPS                     = true;
 
         //control and fullscreen controller
-        private boolean fullscreen                  = true;
+        private boolean fullscreen                  = false;
         private boolean isFullScreenAvailable       = false;
 
         /**
@@ -395,29 +395,6 @@ public class Popeye implements Runnable {
             } catch(InterruptedException ex){}
             this.bufferStrategy = super.getBufferStrategy();
         }
-
-        /*
-        public void notify(boolean U, boolean D, boolean L, boolean R, boolean HOLD, boolean DROP, boolean ROTATE) {
-            if (U) {
-                this.game.keyPressed(38);
-            } else if (D) {
-                this.game.keyPressed(40);
-            } else if (L) {
-                this.game.keyPressed(37);
-            } else if (R) {
-                this.game.keyPressed(39);
-            } else if (HOLD) {
-                this.game.keyPressed(17);
-            } else if (DROP) {
-                this.game.keyPressed(32);
-            } else if (ROTATE) {
-                this.game.keyPressed(38);
-            }
-
-            if (!U && !D && !L && !R) {
-                //this.game.keyReleased(0);
-            }
-        }*/
     }
 
     /**
