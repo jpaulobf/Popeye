@@ -515,8 +515,7 @@ public class Popeye implements Runnable {
                             
                             // Busy-wait for the remaining nanoseconds
                             while (System.nanoTime() < now + TARGET_FRAMETIME - overSleep) {
-                                // Cede o tempo de CPU para outras threads enquanto espera, para evitar 100% de uso.
-                                Thread.yield();
+                                // Spin-wait for precision (removido yield para maior precisão nos últimos ns)
                             }
                             overSleep = 0;
                         } catch (InterruptedException e) {
@@ -526,11 +525,10 @@ public class Popeye implements Runnable {
                         // We are behind schedule
                         overSleep = -wait;
                         
-                        // Frame Skipping: Se estamos atrasados por mais de um quadro completo,
-                        // precisamos recuperar o tempo executando a lógica do jogo sem renderizar.
-                        while (overSleep >= TARGET_FRAMETIME) {
-                            this.update(TARGET_FRAMETIME); // Executa um passo da simulação para recuperar o tempo
-                            overSleep -= TARGET_FRAMETIME; // "Paga" a dívida de tempo de um quadro
+                        // Limita o overSleep para evitar que o jogo tente recuperar o tempo perdido indefinidamente
+                        // Isso evita o efeito de aceleração excessiva após um lag spike
+                        if (overSleep > TARGET_FRAMETIME) {
+                            overSleep = TARGET_FRAMETIME;
                         }
                     }
                 }
