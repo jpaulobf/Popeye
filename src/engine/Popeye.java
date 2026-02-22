@@ -82,7 +82,7 @@ public class Popeye implements Runnable {
         private boolean showFPS                     = true;
 
         //control and fullscreen controller
-        private boolean fullscreen                  = false;
+        private boolean fullscreen                  = true;
         private boolean isFullScreenAvailable       = false;
 
         /**
@@ -468,12 +468,12 @@ public class Popeye implements Runnable {
         
         /* Método de execução da thread */
         public void run() {
-            long lastTime           = System.nanoTime();
+            long lastTime           = System.nanoTime(); // Usado para calcular o delta time no modo de FPS ilimitado
             long now                = 0;
             long elapsed            = 0;
             long wait               = 0;
             long overSleep          = 0;
-    
+
             if (UNLIMITED_FPS) {
                 while (isEngineRunning) {
                     now = System.nanoTime();
@@ -492,10 +492,11 @@ public class Popeye implements Runnable {
             } else {
                 while (isEngineRunning) {
                     now = System.nanoTime();
+                    elapsed = now - lastTime;
+                    lastTime = now;
 
-                    // Update and Draw with fixed time step
-                    this.update(TARGET_FRAMETIME);
-                    this.draw(TARGET_FRAMETIME);
+                    this.update(elapsed);
+                    this.draw(elapsed);
 
                     // Calculate time taken
                     long workTime = System.nanoTime() - now;
@@ -514,7 +515,8 @@ public class Popeye implements Runnable {
                             
                             // Busy-wait for the remaining nanoseconds
                             while (System.nanoTime() < now + TARGET_FRAMETIME - overSleep) {
-                                // spin
+                                // Cede o tempo de CPU para outras threads enquanto espera, para evitar 100% de uso.
+                                Thread.yield();
                             }
                             overSleep = 0;
                         } catch (InterruptedException e) {
@@ -523,15 +525,12 @@ public class Popeye implements Runnable {
                     } else {
                         // We are behind schedule
                         overSleep = -wait;
-
-                        // Prevent spiral of death: cap the debt
-                        if (overSleep > TARGET_FRAMETIME) {
-                            overSleep = TARGET_FRAMETIME;
-                        }
-
-                        // Frame Skip: If significantly behind, update logic again without drawing
-                        if (overSleep > TARGET_FRAMETIME) {
-                            this.update(TARGET_FRAMETIME);
+                        
+                        // Frame Skipping: Se estamos atrasados por mais de um quadro completo,
+                        // precisamos recuperar o tempo executando a lógica do jogo sem renderizar.
+                        while (overSleep >= TARGET_FRAMETIME) {
+                            this.update(TARGET_FRAMETIME); // Executa um passo da simulação para recuperar o tempo
+                            overSleep -= TARGET_FRAMETIME; // "Paga" a dívida de tempo de um quadro
                         }
                     }
                 }
