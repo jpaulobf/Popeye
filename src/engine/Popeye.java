@@ -10,7 +10,6 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
-import java.util.Arrays;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 import interfaces.GameInterface;
